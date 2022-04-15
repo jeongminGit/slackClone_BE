@@ -2,7 +2,7 @@ const express = require("express");
 const Messages = require("../schemas/messages.js");
 const {ObjectId} = require("mongodb")
 const router = express.Router();
-const authMiddleware = require("../middlewares/auth-middleware");
+// const authMiddleware = require("../middlewares/auth-middleware");
 
 
 // // Comment조회: 클라이언트에 보내기

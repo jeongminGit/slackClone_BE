@@ -9,6 +9,7 @@ const socketIo = require("socket.io");
 const app = express();
 const port = 3000;
 
+
 //소켓
 const http = Http.createServer(app);
 const io = socketIo(http)

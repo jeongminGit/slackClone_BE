@@ -9,6 +9,7 @@ const postSchema = new mongoose.Schema({
   channelName: {
     //채널 이름
     type: String,
+    required: true, //필수 값
   },
   channelDesc: {
     //채널 설명
@@ -22,10 +23,12 @@ const postSchema = new mongoose.Schema({
   content: {
     //게시글 내용
     type: String,
+    required: true, //필수 값
   },
   contentId: {
     //게시글 아이디
     type: String,
+    required: true, //필수 값
   },
   imageUrl: {
     //이미지
@@ -37,6 +40,7 @@ const postSchema = new mongoose.Schema({
   isPublic: {
     //권한설정
     type: Boolean,
+    required: true, //필수 값
   },
   uerList: {
     //유저리스트
@@ -44,4 +48,5 @@ const postSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("channels", postSchema);
+module.exports = mongoose.model("Channel", channelSchema);
+

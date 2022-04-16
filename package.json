@@ -1,9 +1,11 @@
 {
   "dependencies": {
+    "color-hash": "^2.0.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "moment": "^2.29.2",
     "mongoose": "^6.3.0",
+    "multer": "^1.4.4",
     "socket.io": "^4.4.1"
   },
   "name": "slackclone",

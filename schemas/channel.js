@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const postSchema = new mongoose.Schema({
+const channelSchema = new mongoose.Schema({
   // postId: {
   //   type: String,
   //   unique: true, //유니크 값
@@ -9,26 +9,30 @@ const postSchema = new mongoose.Schema({
   channelName: {
     //채널 이름
     type: String,
-    required: true, //필수 값
+    // required: true, //필수 값
   },
   channelDesc: {
+    //채널 설명
+    type: String,
+  },
+  channelId: {
     //채널 설명
     type: String,
   },
   title: {
     //게시글 제목
     type: String,
-    required: true,
+    // required: true,
   },
   content: {
     //게시글 내용
     type: String,
-    required: true, //필수 값
+    // required: true, //필수 값
   },
   contentId: {
     //게시글 아이디
     type: String,
-    required: true, //필수 값
+    // required: true, //필수 값
   },
   imageUrl: {
     //이미지
@@ -40,9 +44,9 @@ const postSchema = new mongoose.Schema({
   isPublic: {
     //권한설정
     type: Boolean,
-    required: true, //필수 값
+    // required: true, //필수 값
   },
-  uerList: {
+  userList: {
     //유저리스트
     type: Array,
   },

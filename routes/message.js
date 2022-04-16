@@ -12,6 +12,12 @@ const router = express.Router();
 // DirectMessage_Room: 클라이언트에 채팅방 리스트보내기
 router.get('/', async (req, res, next) => { //==============> 프론트에서 확인 주소:"message/"
   try {
+
+    // 헤드로 받아온 id를 기준으로 다이렉트메시지방을 보여주기... (보류)
+    const {user} = res.locals; //===================================> 로그인 연결되어야확인이 가능함... ㅠㅠ
+
+
+
     const rooms = await Room.find({});
 
     // 'main'은 main.html를 가리킴 ===================================> 프론트에서 확인
@@ -34,18 +40,34 @@ router.get('/room', (req, res) => {
 // DirectMessage_Room: 생성화면 '생성'버튼 클릭시 정보보내기 (친구추가 부분)
 router.post('/room', async (req, res, next) => {
   try {
-    const newRoom = await Room.create({ });
-    console.log(newRoom._id)
-    await Room.updateOne({userId:`${newRoom._id}`},{$addToSet:{friendList:`${friendId}`}})
-    console.log(newRoom)
-    // const newRoom = await Room.create({
-    //   users: req.body.users,
-    //   owner: req.session.color,            //========================================> 쿠키 변경시 확인
-    // });
+    
+    // 1. 친구리스트 주기 (메시지방 생성시 친구검색시 나오는 친구리스트)
+    const users = await User.find({});
+    // const userlist = users.userId
+    const userlist = [];
+    for (const user of users){
+      const info = await User.find({ userId :user.userId},    
+        {_id:0, userId:1, nickName:1})
+      userlist.push(info[0])
+    }
+    
 
+              //아래 전달값
+              //  [
+              //   { userId: 'test3', nickName: '테스트입니다' },
+              //   { userId: 'test4', nickName: '테스트입니다' }
+              //   ]
 
+     // 2. 친구추가 부분 (프론트에서 리스트를 보내줘야 가능)
+    const newRoom = await Room.create({
+      users: req.body.users,     //========================================> 프론트에서 
+      owner: req.session.color,    //========================================> 쿠키 변경시 확인
+      isShown: "true",   
+    });
+
+  
     const io = req.app.get('io');
-    io.of('/message/room').emit('newRoom', newRoom); //========================================> 프론트 확인사항 (main.html , 44번에서 확인)
+    io.of('/message/room').emit('newRoom', newRoom, userlist); //=============> 프론트 확인사항 (main.html , 44번에서 확인)
     res.redirect(`/message/room/${newRoom._id}`);
   } catch (error) {
     console.error(error);
@@ -60,7 +82,7 @@ router.get('/room/:id', async (req, res, next) => {
     const room = await Room.findOne({ _id: req.params.id });
     const io = req.app.get('io');
     const chats = await Chat.find({ room: room._id }).sort('createdAt');   
-    return res.render('chat', {                         //========================================> 프론트 확인사항 (chat.html)
+    return res.render('chat', {               //========================================> 프론트 확인사항 (chat.html)
       room,
       users: room.users,
       chats,
@@ -79,7 +101,7 @@ router.get('/room/:id', async (req, res, next) => {
 //     await Room.remove({ _id: req.params.id });
 //     await Chat.remove({ room: req.params.id });
 //     res.send('ok');
-//     setTimeout(() => {                                     //========================================> 프론트 확인사항 (chat.html)
+//     setTimeout(() => {
 //       req.app.get('io').of('/message/room').emit('removeRoom', req.params.id); 
 //     }, 2000);
 //   } catch (error) {
@@ -89,14 +111,15 @@ router.get('/room/:id', async (req, res, next) => {
 // });
 
 
-//
+// DirectMessage_Room: 채팅 DB 저장하기
 router.post('/room/:id/chat', async (req, res, next) => {
   try {
     const chat = await Chat.create({
       room: req.params.id,
-      user: req.session.color,
+      user: req.session.color,       //========================================> 로그인 연결시 진행상황
       chat: req.body.chat,
     });
+    console.log(chat)
     req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
     res.send('ok');
   } catch (error) {
@@ -123,19 +146,22 @@ const upload = multer({
   }),
   limits: { fileSize: 5 * 1024 * 1024 },
 });
-router.post('/room/:id/gif', upload.single('gif'), async (req, res, next) => {
-  try {
-    const chat = await Chat.create({
-      room: req.params.id,
-      user: req.session.color,
-      gif: req.file.filename,
-    });
-    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
-    res.send('ok');
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
+
+
+// GIF 사진 올리기
+// router.post('/room/:id/gif', upload.single('gif'), async (req, res, next) => {
+//   try {
+//     const chat = await Chat.create({
+//       room: req.params.id,
+//       user: req.session.color,
+//       gif: req.file.filename,
+//     });
+//     req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+//     res.send('ok');
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// });
 
 module.exports = router;

@@ -8,6 +8,7 @@ const roomSchema = new mongoose.Schema({
     type: Date,
     defalt: Date.now(),
   },
+  isShown: String,
 },
 {
   timestamps: true

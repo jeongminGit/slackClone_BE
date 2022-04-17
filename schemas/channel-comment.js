@@ -60,21 +60,17 @@ const channelSchema = new mongoose.Schema({
     type: Boolean,
     // required: true, //필수 값
   },
-  // result: {
-  //   //모든리스트
-  //   type: Array,
-  // },
+  allList: {
+    //모든리스트
+    type: Array,
+  },
   contentList: {
     //내용리스트
     type: Array,
   },
-  // commentList: {
-  //   //댓글리스트
-  //   type: Array,
-  // },
-  isEdit: {
-    //내용리스트
-    type: Boolean,
+  commentList: {
+    //댓글리스트
+    type: Array,
   },
 });
 

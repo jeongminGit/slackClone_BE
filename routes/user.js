@@ -38,16 +38,9 @@ const registerSchema = Joi.object({
 
 //회원가입
 router.post("/signup", upload.single('image'), async (req, res) => {
-
+    console.log(profileImg)
     try {
-        var profileImg = undefined;
-        // const email = await registerSchema.validateAsync(req.body)
-        // const nickname = await registerSchema.validateAsync(req.body)
-        // const password = await registerSchema.validateAsync(req.body)
-        // const passwordCheck = await registerSchema.validateAsync(req.body)
         const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
-
-
         if (password.includes(nickname)) {
             res.status(400).send({
                 errorMessage: "사용자의 이름은 비밀번호에 사용할 수 없습니다."
@@ -69,14 +62,12 @@ router.post("/signup", upload.single('image'), async (req, res) => {
             })
             return;
         }
-         
-        // const existprofileImg = req.body.profileImg
+        
         if (profileImg == undefined) {
             var profileImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profileImg.png'
         } else {
             var profileImg = req.file.location;
         }
-        console.log(profileImg)
         
         const hashed = await bcrypt.hash(password,10)
         const user = new User({ email, nickname, password: hashed, profileImg})
@@ -85,12 +76,12 @@ router.post("/signup", upload.single('image'), async (req, res) => {
         res.status(201).send({ result: 'success' })
 
     } catch (err) {
-
         // return res.status(400).send({
         //   errorMessage: "요청한 데이터 형식이 올바르지 않습니다."
         // })
 
         let whatError = err.details[0].message
+        // let whatError = err
         console.log(whatError)
 
         if (whatError.includes('email')) {
@@ -160,10 +151,11 @@ router.get("/getuser", authMiddleware, async (req, res) => {
     const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);
     console.log(user[0], token)
     res.send({
-      token: token,
+      email: user[0].email,
+      nickname: user[0].nickname,
+      profileImg: user[0].profileImg,
+      token: token
     });
   });
-
-
 
 module.exports = router;

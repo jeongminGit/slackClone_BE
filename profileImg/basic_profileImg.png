@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Error><Code>AuthorizationHeaderMalformed</Code><Message>The authorization header is malformed; the region 'us-east-1' is wrong; expecting 'ap-northeast-2'</Message><Region>ap-northeast-2</Region><RequestId>B1Z41H09X6TPD4CM</RequestId><HostId>iql+Tl4nghpZYN1cuZownSTlmRqKgN4DHwcjdI8gxx0wo1DzB1BXsAdWJblbJ3MK7U1d+4t/g34=</HostId></Error>
+<Error><Code>AuthorizationHeaderMalformed</Code><Message>The authorization header is malformed; the region 'us-east-1' is wrong; expecting 'ap-northeast-2'</Message><Region>ap-northeast-2</Region><RequestId>ARZN94ZRE73QC6FH</RequestId><HostId>pk93HcDonJBkEXPED0Zj33GcPU/1wwK/or5LVMw4w/ZLjhR1IKhL+IacE1WeF67YYps/JzbczyY=</HostId></Error>

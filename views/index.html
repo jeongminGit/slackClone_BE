@@ -9,10 +9,14 @@
 <div>F12를 눌러 console 탭과 network 탭을 확인하세요.</div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+  // const socket = io.connect('http://localhost:8005/message', {
+  //   path: '/socket.io',
+  //   transports: ['websocket'],
+  // });
   const socket = io.connect('http://localhost:8005/message', {
-    path: '/socket.io',
-    transports: ['websocket'],
+  extraHeaders: { Authorization: `Bearer ${your_jwt}` }
   });
+
   socket.on('news', function (data) {
     console.log(data);
     socket.emit('reply', 'Hello Node.JS');

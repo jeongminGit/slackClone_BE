@@ -29,6 +29,7 @@ router.post("/login", async (req, res) => {
         const userinfo = await User.findOne({ userId : user.userId},    
             {_id:0, userId:1, nickName:1, startTime:1, totalTime:1, connecting:1, friendList:1, userImage:1, statusMeg:1 })
         const token = jwt.sign({ userId : user.userId},process.env.JWT_SECRET);
+        console.log(token)
         res.json({token, userinfo})
     }
 

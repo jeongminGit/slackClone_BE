@@ -1,28 +1,46 @@
 const SocketIO = require('socket.io');
 const axios = require('axios');
-const cookieParser = require('cookie-parser');
-const cookie = require('cookie-signature');
+// const cookieParser = require('cookie-parser');
+// const cookie = require('cookie-signature');
 
-module.exports = (server, app, sessionMiddleware) => {
+module.exports = (server, app) => {
+  console.log('hey')
   const io = SocketIO(server, { path: '/socket.io' });
   app.set('io', io);
   const room = io.of('/message/room');
   const chat = io.of('/message/chat');
+  
+  // // //수정이 필요한곳!
+  // io.use((socket, next) => {
+  //   console.log('읽어줘', socket)
+  //   // cookieParser(process.env.COOKIE_SECRET)(socket.request, socket.request.res, next);
+  //   // requestMiddleware(socket.request, socket.request.res, next);
+  // });
 
+  // io.on("connection", (socket) => {
+  //   //     console.log("연결됨!", new Date())
+  // });
 
-  //수정이 필요한곳!
-  io.use((socket, next) => {
-    cookieParser(process.env.COOKIE_SECRET)(socket.request, socket.request.res, next);
-    sessionMiddleware(socket.request, socket.request.res, next);
+  // room.on('connection', socket => {
+  //   console.log('room 네임스페이스에 접속');
+  //   // socket.on('disconnect', () => {
+  //   //   console.log('room 네임스페이스 접속 해제');
+  //   // });
+  // });
+
+  room.use((socket, next) => {
+    console.log('읽어줘', socket.request, next)
+    requestMiddleware(socket.request, socket.request.res, next)
+    // cookieParser(process.env.COOKIE_SECRET)(socket.request, socket.request.res, next);
+    // requestMiddleware(socket.request, socket.request.res, next);
   });
 
-
-  room.on('connection', (socket) => {
-    console.log('room 네임스페이스에 접속');
-    socket.on('disconnect', () => {
-      console.log('room 네임스페이스 접속 해제');
-    });
-  });
+  // room.on('connection', (socket) => {
+  //   console.log('room 네임스페이스에 접속');
+  //   socket.on('disconnect', () => {
+  //     console.log('room 네임스페이스 접속 해제');
+  //   });
+  // });
 
 
   chat.on('connection', (socket) => {

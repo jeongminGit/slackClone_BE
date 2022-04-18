@@ -3,6 +3,7 @@ const User = require("../schemas/user");
 
 module.exports = (req, res, next) => {
     const { authorization } = req.headers;
+    console.log(authorization,'1차확인')
     const [authType, authToken] = authorization.split(" ");
     console.log(authorization)
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 
 const roomSchema = new mongoose.Schema({
-  users: String,
+  users: [],
   owner: String,
   createdAt: {
     type: Date,

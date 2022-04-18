@@ -2,23 +2,24 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const SocketIO = require('socket.io');
 
 const User = require('../schemas/user');
 const Room = require('../schemas/room'); 
 const Chat = require('../schemas/chat');
+const authMiddleware = require("../middlewares/auth-middleware");
 
 const router = express.Router();
 
 // DirectMessage_Room: 클라이언트에 채팅방 리스트보내기
-router.get('/', async (req, res, next) => { //==============> 프론트에서 확인 주소:"message/"
+router.get('/',authMiddleware,async (req, res, next) => { //==============> 프론트에서 확인 주소:"message/"
   try {
+    
+    const {user} = res.locals; 
+    console.log(user.userId)
 
-    // 헤드로 받아온 id를 기준으로 다이렉트메시지방을 보여주기... (보류)
-    const {user} = res.locals; //===================================> 로그인 연결되어야확인이 가능함... ㅠㅠ
-
-
-
-    const rooms = await Room.find({});
+    const rooms = await Room.find({users: user.userId});
+  
 
     // 'main'은 main.html를 가리킴 ===================================> 프론트에서 확인
     res.render('main', { rooms, users:'채팅방 생성' });
@@ -31,27 +32,25 @@ router.get('/', async (req, res, next) => { //==============> 프론트에서 �
 
 
 // DirectMessage_Room: 메인화면 '채팅방생성'버튼 클릭시 정보보내기
-router.get('/room', (req, res) => {
+router.get('/room',authMiddleware, (req, res) => {
+  // 'room'은 room.html를 가리킴 ===================================> 프론트에서 확인
   res.render('room', { users: '채팅방 생성' });
   console.log
 });
 
 
 // DirectMessage_Room: 생성화면 '생성'버튼 클릭시 정보보내기 (친구추가 부분)
-router.post('/room', async (req, res, next) => {
+router.post('/room',authMiddleware, async (req, res, next) => {
   try {
-    
     // 1. 친구리스트 주기 (메시지방 생성시 친구검색시 나오는 친구리스트)
     const users = await User.find({});
-    // const userlist = users.userId
+  
     const userlist = [];
     for (const user of users){
       const info = await User.find({ userId :user.userId},    
         {_id:0, userId:1, nickName:1})
       userlist.push(info[0])
     }
-    
-
               //아래 전달값
               //  [
               //   { userId: 'test3', nickName: '테스트입니다' },
@@ -59,15 +58,15 @@ router.post('/room', async (req, res, next) => {
               //   ]
 
      // 2. 친구추가 부분 (프론트에서 리스트를 보내줘야 가능)
-    const newRoom = await Room.create({
-      users: req.body.users,     //========================================> 프론트에서 
-      owner: req.session.color,    //========================================> 쿠키 변경시 확인
-      isShown: "true",   
-    });
-
+     const {user} = res.locals; 
+      const newRoom = await Room.create({
+        users: [req.body.users],     //========================================> 프론트에서 
+        owner: user.userId,   
+        isShown: "true",   
+      });
   
     const io = req.app.get('io');
-    io.of('/message/room').emit('newRoom', newRoom, userlist); //=============> 프론트 확인사항 (main.html , 44번에서 확인)
+    io.of(`/message/room/${newRoom._id}`).emit('newRoom', newRoom); //=====> 프론트 확인사항 ("newRoom": 새로운방 생성)
     res.redirect(`/message/room/${newRoom._id}`);
   } catch (error) {
     console.error(error);
@@ -77,16 +76,20 @@ router.post('/room', async (req, res, next) => {
 
 
 // DirectMessage_Room: 메시지방 들어갈때 정보보내기 
-router.get('/room/:id', async (req, res, next) => {
+router.get('/room/:id',authMiddleware, async (req, res, next) => {
   try {
+    const {user} = res.locals;
+    console.log(user.userId,'<<<<<<')
     const room = await Room.findOne({ _id: req.params.id });
+    console.log(room)
     const io = req.app.get('io');
-    const chats = await Chat.find({ room: room._id }).sort('createdAt');   
-    return res.render('chat', {               //========================================> 프론트 확인사항 (chat.html)
+    const chats = await Chat.find({ room: room._id }).sort('createdAt'); 
+    console.log(chats)  
+    return res.render('chat', {               //===================> 프론트 확인사항 (chat.html)
       room,
       users: room.users,
       chats,
-      user: req.session,
+      user: user.userId,
     });
   } catch (error) {
     console.error(error);
@@ -95,32 +98,16 @@ router.get('/room/:id', async (req, res, next) => {
 });
 
 
-// // DirectMessage_Room: 메시지방 삭제 
-// router.delete('/room/:id', async (req, res, next) => {
-//   try {
-//     await Room.remove({ _id: req.params.id });
-//     await Chat.remove({ room: req.params.id });
-//     res.send('ok');
-//     setTimeout(() => {
-//       req.app.get('io').of('/message/room').emit('removeRoom', req.params.id); 
-//     }, 2000);
-//   } catch (error) {
-//     console.error(error);
-//     next(error);
-//   }
-// });
-
-
 // DirectMessage_Room: 채팅 DB 저장하기
-router.post('/room/:id/chat', async (req, res, next) => {
+router.post('/room/:id/chat',authMiddleware, async (req, res, next) => {
   try {
+    const {user} = res.locals;
     const chat = await Chat.create({
       room: req.params.id,
-      user: req.session.color,       //========================================> 로그인 연결시 진행상황
+      user: user.userId,      
       chat: req.body.chat,
     });
-    console.log(chat)
-    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+     req.app.get('io').of('message/chat').to(req.params.id).emit('chat', chat);
     res.send('ok');
   } catch (error) {
     console.error(error);

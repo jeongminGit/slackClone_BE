@@ -31,14 +31,12 @@ const registerSchema = Joi.object({
     passwordCheck: Joi
         .string()
         .required()
-    // profileImg: Joi
-    //     .string()
-    //     .required()
 })
 
 //회원가입
 router.post("/signup", upload.single('image'), async (req, res) => {
-    console.log(profileImg)
+    const basicImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profileImg.png'
+    // console.log(req.file)
     try {
         const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
         if (password.includes(nickname)) {
@@ -62,9 +60,9 @@ router.post("/signup", upload.single('image'), async (req, res) => {
             })
             return;
         }
-        
-        if (profileImg == undefined) {
-            var profileImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profileImg.png'
+
+        if (req.file == null || undefined) {
+            var profileImg = basicImg
         } else {
             var profileImg = req.file.location;
         }
@@ -76,29 +74,31 @@ router.post("/signup", upload.single('image'), async (req, res) => {
         res.status(201).send({ result: 'success' })
 
     } catch (err) {
-        // return res.status(400).send({
-        //   errorMessage: "요청한 데이터 형식이 올바르지 않습니다."
-        // })
+        res.status(400).send({
+        errorMessage: "요청한 데이터 형식이 올바르지 않습니다.",
+        })
+        return
+        
 
-        let whatError = err.details[0].message
-        // let whatError = err
-        console.log(whatError)
+    //     let whatError = err.details[0].message
+    //     // let whatError = err
+    //     console.log(whatError)
 
-        if (whatError.includes('email')) {
-            res.status(400).send({
-                errorMessage: '이메일 형식을 확인해주세요.'
-            })
-        }
-        if (whatError.includes('nickname')) {
-            res.status(400).send({
-                errorMessage: '이름 형식을 확인해주세요.'
-            })
-        }
-        if (whatError.includes('password')) {
-            res.status(400).send({
-                errorMessage: '비밀번호 형식을 확인해주세요.'
-            })
-        }
+    //     if (whatError.includes('email')) {
+    //         res.status(400).send({
+    //             errorMessage: '이메일 형식을 확인해주세요.'
+    //         })
+    //     }
+    //     if (whatError.includes('nickname')) {
+    //         res.status(400).send({
+    //             errorMessage: '이름 형식을 확인해주세요.'
+    //         })
+    //     }
+    //     if (whatError.includes('password')) {
+    //         res.status(400).send({
+    //             errorMessage: '비밀번호 형식을 확인해주세요.'
+    //         })
+    //     }
     }
 
 })

@@ -16,8 +16,7 @@ const UserSchema = new mongoose.Schema({
   },
   profileImg: {
     type: String,
-    required: true,
-    default: 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profileImg.png'
+    required: true
   }
   
 });

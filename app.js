@@ -8,20 +8,6 @@ const indexRouter = require('./routes');
 const AWS = require('aws-sdk');
 const port = 3000;
 
-
-//MongoDB 설정
-//mongoose.connect('mongodb://localhost/mydb', {});
-// var db = mongoose
-// .connect("mongodb+srv://test:test@cluster0.9zxeb.mongodb.net/cluster0?retryWrites=true&w=majority",{
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//         // useCreateIndex: true, //MondDB 6.0 이상에서는 지원 X
-//         ignoreUndefined: true
-//     })
-//     .then(() => console.log('MongoDB 연결완료'))
-//     .catch(err =>{console.log(err);
-// });
-
 connect();
 
 const app = express();
@@ -53,6 +39,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log( new Date().toLocaleString() , port, ': connect');
 });

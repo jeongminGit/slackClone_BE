@@ -3,23 +3,12 @@ const multer = require('multer')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const userRouter = require('./routes/user');
+const connect = require('./schemas');
+const indexRouter = require('./routes');
 const AWS = require('aws-sdk');
 const port = 3000;
 
-
-//MongoDB 설정
-//mongoose.connect('mongodb://localhost/mydb', {});
-var db = mongoose
-.connect("mongodb+srv://test:test@cluster0.9zxeb.mongodb.net/cluster0?retryWrites=true&w=majority",{
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        // useCreateIndex: true, //MondDB 6.0 이상에서는 지원 X
-        ignoreUndefined: true
-    })
-    .then(() => console.log('MongoDB 연결완료'))
-    .catch(err =>{console.log(err);
-});
+connect();
 
 const app = express();
 const router = express.Router();
@@ -41,16 +30,15 @@ const requestMiddleware = (req, res, next) => {
 };
 
 app.use(requestMiddleware);
-app.use('/user', userRouter);
+app.use('/', indexRouter);
 
 const corsOptions = {
     origin: '*',
     // credentials: true
 };
 
-// app.use(cors());
 app.use(cors(corsOptions));
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log( new Date().toLocaleString() , port, ': connect');
 });

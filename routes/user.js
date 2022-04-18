@@ -107,7 +107,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
 //로그인, 토큰생성
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
     console.log(user)
     if (!user) {
         res.status(401).send({
@@ -121,9 +121,15 @@ router.post("/login", async (req, res) => {
             const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);
             const nickname = user.nickname;
             const profileImg = user.profileImg;
-    res.status(200).send({ token, email, nickname, profileImg })
+            res.status(200).send({
+                result: "success",
+                token,
+                // email,
+                // nickname,
+                // profileImg
+            })
         } else {
-            res.status(400).send({errorMessage: '비밀번호를 확인해주세요.' })
+            res.status(400).send({ errorMessage: '비밀번호를 확인해주세요.' })
         }
     }
 })

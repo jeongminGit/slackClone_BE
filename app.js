@@ -3,7 +3,8 @@ const multer = require('multer')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const userRouter = require('./routes/user');
+const connect = require('./schemas');
+const indexRouter = require('./routes');
 const AWS = require('aws-sdk');
 const port = 3000;
 
@@ -35,16 +36,15 @@ const requestMiddleware = (req, res, next) => {
 };
 
 app.use(requestMiddleware);
-app.use('/user', userRouter);
+app.use('/', indexRouter);
 
 const corsOptions = {
     origin: '*',
     // credentials: true
 };
 
-// app.use(cors());
 app.use(cors(corsOptions));
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log( new Date().toLocaleString() , port, ': connect');
 });

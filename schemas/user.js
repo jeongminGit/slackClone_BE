@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     default: 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profileImg.png'
   }
+  
 });
 
 module.exports = mongoose.model("User", UserSchema);

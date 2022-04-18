@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -131,3 +132,10 @@ dist
 
 # awsconfig.json
 .awsconfig.js
+=======
+node_modules
+dist/*
+*.log
+
+.env
+>>>>>>> 80f3b1baf8ef7a5c1ded8c330707a63bbc7d3fc1

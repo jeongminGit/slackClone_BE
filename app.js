@@ -11,7 +11,8 @@ const port = 3000;
 //MongoDB 설정
 //mongoose.connect('mongodb://localhost/mydb', {});
 var db = mongoose
-.connect("mongodb+srv://test:test@cluster0.9zxeb.mongodb.net/cluster0?retryWrites=true&w=majority",{
+// .connect("mongodb+srv://test:test@cluster0.9zxeb.mongodb.net/cluster0?retryWrites=true&w=majority",{
+.connect("mongodb+srv://SlackClone:slack2022@cluster0.ij7rk.mongodb.net/SlackClone?retryWrites=true&w=majority",{
         useNewUrlParser: true,
         useUnifiedTopology: true,
         // useCreateIndex: true, //MondDB 6.0 이상에서는 지원 X
@@ -30,13 +31,6 @@ app.use('/', express.urlencoded({extended: false}), router); // API 요청에서
 // post middleware
 const requestMiddleware = (req, res, next) => {
     console.log("Request URL:", req.originalUrl, " - ", new Date()); //request 로그 남기는 미들웨어
-    
-    var s3 = new AWS.S3();
-    var params = {Bucket: 'slackclone-be', Key: 'basic_profileImg.png'};
-    var file = require('fs').createWriteStream('./profileImg/basic_profileImg.png');
-
-    s3.getObject(params).on('httpData', function(chunk) { file.write(chunk); }).on('httpDone', function() { file.end(); }).
-    send();
     next();
 };
 

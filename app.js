@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const userRouter = require('./routes/user');
-const checkmiddleware = require('./middlewares/checkmiddleware')
 const AWS = require('aws-sdk');
 const port = 3000;
 
@@ -40,20 +39,14 @@ const requestMiddleware = (req, res, next) => {
     send();
     next();
 };
+
 app.use(requestMiddleware);
 app.use('/user', userRouter);
-// app.use('/user/check', checkmiddleware)
 
 const corsOptions = {
     origin: '*',
     // credentials: true
 };
-
-// app.get('/', async (req, res) => {
-//     console.log("main_page")   
-//     bodyParser.json()
-//     res.sendFile(__dirname + "/test.html");
-// });
 
 // app.use(cors());
 app.use(cors(corsOptions));

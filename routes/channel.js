@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const Channel = require("../schemas/channel");
+const ChannelContent = require("../schemas/channelContent");
+const ChannelComment = require("../schemas/channelComment");
 const router = express.Router()
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -161,241 +163,12 @@ const moment = require("moment")
 
 
 
-
-
-
-
-
-// const d=[
-//   {
-//     channelName: "홍길동",
-//     createdAt: "2022-04-15 00:51",
-//     channelHost: "닉네임", // 생성한 유저의 닉네임
-//     contentList: [
-//       {
-//         channelName: "홍길동",
-//         contentId: "abcdefu",
-//         createdAt: "2022-04-15 00:51",
-//         content: "내용입니다",
-//         userId: "user1", // 수정/삭제 고유값
-//         nickname: "닉네임", // 유저닉네임
-//         profileImg: "",
-//         isEdit: false,
-//         commentList: [
-//           {
-//             commentId: "alskdjfaklsdjfaa",
-//             contentId: "abcdefu",
-//             createdAt: "2022-04-15 01:30",
-//             comment: "댓글달아봐요",
-//             userId: "user1", // 수정/삭제 고유값
-//             nickname: "닉네임", // 유저닉네임
-//             profileImg: "",
-//           },
-//           {
-//             commentId: "asdkjfnasdfkjansdfkjahsdf",
-//             contentId: "abcdefu",
-//             createdAt: "2022-04-15 01:33",
-//             comment: "댓글입니다",
-//             userId: "user2", // 수정/삭제 고유값
-//             nickname: "이리오너라", // 유저닉네임
-//             profileImg: "asdlkfjasldkjf",
-//           }
-//         ]
-//       },
-//       {
-//         channelName: "홍길동",
-//         contentId: "qowieuroi",
-//         createdAt: "2022-04-15 11:51",
-//         content: "안녕하세요~",
-//         userId: "user3", // 수정/삭제 고유값
-//         nickname: "한울", // 유저닉네임
-//         profileImg: "",
-//         isEdit: true,
-//         commentList: [
-//           {
-//             commentId: "alskdjfaklsdjfaa",
-//             contentId: "qowieuroi",
-//             createdAt: "2022-04-15 01:30",
-//             comment: "댓글달기",
-//             userId: "user5", // 수정/삭제 고유값
-//             nickname: "닉네임5", // 유저닉네임
-//             profileImg: "",
-//           },
-//           {
-//             commentId: "asdkjfnasdfkjansdfkjahsdf",
-//             contentId: "qowieuroi",
-//             createdAt: "2022-04-15 01:33",
-//             comment: "댓글 또달기",
-//             userId: "user5", // 수정/삭제 고유값
-//             nickname: "닉네임5", // 유저닉네임
-//             profileImg: "asdlkfjasldkjf",
-//           }
-//         ]
-//       },
-//     ]
-//   }, {
-//     channelName: "항해99 공지나눔",
-//     createdAt: "2022-04-15 00:51",
-//     channelHost: "네이놈", // 생성한 유저의 닉네임
-//     contentList: [],
-//   }
-// ]
-
-
-
-
-
-
-
-// // 메인 페이지 전체 리스트
-// router.post('/content/list', async (req, res) => {
-//   try {
-//     const { profileName } = req.body;
-
-//     const listTop = await Content.find({}, {
-//         _id: false,
-//         movieName: true,
-//         movieId: true,
-//         category: true,
-//         make_year: true,
-//         card_image: true,
-//       })
-//       .sort('-average_star')
-//       .limit(10);
-      
-//     const profileInfo = await Profile.findOne(
-//       { profileName },
-//       { _id: false, want: true, listRelay: true }
-//     );
-
-//     let relayList = [];
-//     for (let element of profileInfo.listRelay) {
-//       const movieInfo = await Content.findOne(
-//         { movieId: element.movieId },
-//         {
-//           _id: false,
-//           movieName: true,
-//           movieId: true,
-//           category: true,
-//           make_year: true,
-//           card_image: true,
-//         }
-//       );
-//       relayList.push(movieInfo);
-//     }
-
-//     let wantList = [];
-//     for (let element of profileInfo.want) {
-//       const movieInfomation = await Content.findOne(
-//         { movieId: element },
-//         {
-//           _id: false,
-//           movieName: true,
-//           movieId: true,
-//           category: true,
-//           make_year: true,
-//           card_image: true,
-//         }
-//       );
-//       wantList.push(movieInfomation);
-//     }
-
-//     const exclusiveList = await ExclusiveContent.find({});
-//     const titleList = await TitleContent.find({});
-//     const watchaPartyList = await WatchaParty.find({});
-
-//     const dramaList = await Content.find(
-//       { $or: [{ category: '드라마' }, { category: '단편' }] },
-//       {
-//         _id: false,
-//         movieName: true,
-//         movieId: true,
-//         category: true,
-//         make_year: true,
-//         card_image: true,
-//       }
-//     );
-//     const action_war_List = await Content.find(
-//       { $or: [{ category: '액션' }, { category: '전쟁' }] },
-//       {
-//         _id: false,
-//         movieName: true,
-//         movieId: true,
-//         category: true,
-//         make_year: true,
-//         card_image: true,
-//       }
-//     );
-//     const comedy_adventure__biography_List = await Content.find(
-//       {
-//         $or: [
-//           { category: '코미디' },
-//           { category: '모험' },
-//           { category: '전기' },
-//         ],
-//       },
-//       {
-//         _id: false,
-//         movieName: true,
-//         movieId: true,
-//         category: true,
-//         make_year: true,
-//         card_image: true,
-//       }
-//     );
-//     const fantasy_crime_romanse_etc_list = await Content.find(
-//       {
-//         $or: [
-//           { category: '판타지' },
-//           { category: '범죄' },
-//           { category: '로맨스' },
-//           { category: '애니메이션' },
-//           { category: '스릴러' },
-//           { category: 'SF' },
-//           { category: '미스터리' },
-//         ],
-//       },
-//       {
-//         _id: false,
-//         movieName: true,
-//         movieId: true,
-//         category: true,
-//         make_year: true,
-//         card_image: true,
-//       }
-//     );
-
-//     const categoryList = {
-//       drama: dramaList,
-//       action_war: action_war_List,
-//       comedy_adventure__biography: comedy_adventure__biography_List,
-//       fantasy_crime_romanse_etc: fantasy_crime_romanse_etc_list,
-//     };
-
-//     res
-//       .status(200)
-//       .json({
-//         listTop,
-//         relayList,
-//         wantList,
-//         exclusiveList,
-//         titleList,
-//         watchaPartyList,
-//         categoryList,
-//       });
-//   } catch (error) {
-//     res.status(400).json({ ok: false });
-//   }
-// });
-
-
-
-
-
 //채널 조회
 router.get("/channel/:userId", async (req, res) => {
-    const {List} = req.params
-    const channels = await Channel.find({List});
+    const {userId} = req.params
+    // console.log({userId})
+    const channels = await Channel.find({userList:userId});
+    console.log(channels)
     res.json({ List : channels });
   });
 
@@ -405,10 +178,14 @@ router.get("/channel/:userId", async (req, res) => {
 // const now = moment().format("YYYY-MM-DD-HH:mm");
 
 
+
+
+
+
+
 //채널 생성
 router.post("/channel/channel",  async (req, res) => {
     //authmiddlewares,
-    
     const { channelName,  channelHost } = req.body;
     const createdAt = moment().format("YYYY_MM_DD_HH:mm");
     // const { user } = res.locals;
@@ -417,7 +194,8 @@ router.post("/channel/channel",  async (req, res) => {
     console.log(channelName,createdAt,channelHost)
     const result=[await Channel.create({
       channelName,
-      createdAt : moment(),
+      createdAt,
+      userList: [channelHost],
       channelHost,
       contentList:[]
     })];
@@ -541,18 +319,66 @@ router.delete("/channel/:channelId",  async (req, res) => {
 
 // //ContentInChannel
 
-
+//"channelId": "625d97159630cc4d834748ab"
+//"contentId": "0.9353774031667415"
 //채널 내용
-router.post("/channelId/content", async (req, res) => {
+router.post("/:channelId/content", async (req, res) => {
     //authMiddleware, upload.single('imageUrl'),
-    const {content} = req.body;
+    const { channelName, nickname, profileImg, content} = req.body;
+    const {channelId} = req.params;
+    console.log(channelId)
+    const contentId = Math.random()
+    // const up = await Channel.updateOne(
+    //     { channelId  },
+        
+    //     { $addToSet: { contentList:`${contentId}` }}
+    // );
+    
+
+    const channel = await Channel.findOne({  channelId })
+    channel.contentList.push(contentId) 
+        
+
+const doc = await channel.save()
+
+    
+
+
+    console.log(doc,"여기!!")
+
+    const createdAt = moment().format("YYYY_MM_DD_HH:mm");
     console.log(content)
-    await Channel.create({
+    const contentList =[await ChannelContent.create({
+        channelName,
+        contentId,
+        nickname,
+        profileImg,
         content,
-        isEdit : false
-    });
-    res.json({content});
+        createdAt,
+        isEdit : false,
+        commentList:[]
+    })];
+    console.log(contentList)
+  
+
+    res.json({contentList});
+
+
+
 }),
+
+
+//  "channelId": "625d33e5838e2ff086197c83"
+// "channelContentId": "625d215cf1a740fa3136bc87"
+//   "contentId":"11",
+//   "userNickname":"22",
+//   "profileImg":"33",
+//   "content":"44",
+//   "createdAt":"55",
+//   "isEdit" : false,
+//   "commentList":[]
+
+
 
 
 
@@ -599,19 +425,27 @@ router.delete("/channelId/:contentId",  async (req, res) => {
 
 
 
-
+//   625d93344729899b61c3c1e9
 //댓글 작성
 router.post("/:channelId/:contentId/comment", async (req, res) => {
     //authMiddleware, upload.single('imageUrl'),
     const {comment} = req.body;
+    console.log({comment})
+    // const {user} =res.locals
+     const createdAt = moment().format("YYYY_MM_DD_HH:mm");
     console.log(comment)
-    await Channel.create({
-        comment
-    });
-    res.json({comment});
+    commentList = [await ChannelComment.create({
+        // user,
+        // userNickname:user.userNickname,
+        createdAt,
+        comment,
+        
+
+    })];
+    res.json({commentList});
 }),
 
-
+//"channelCommentId": "625d2aede08f143773d004aa",
 
 router.delete("/channelId/:contentId/:commentId",  async (req, res) => {
     //authMiddleware, upload.single('imageUrl'),

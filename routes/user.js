@@ -2,17 +2,15 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const User = require("../schemas/user")
 const Joi = require("joi")
-// const cors = require('cors')
 const bcrypt = require('bcrypt')
 const authMiddleware = require("../middlewares/auth");
+
 const { upload } = require("../middlewares/upload");
 const { NONAME } = require("dns");
-// const corsOptions = {
-//     origin: '*',
-//     // credentials: true
-// };
+
+
 const router = express.Router();
-// router.use(cors(corsOptions));
+
 
 //  회원 가입 양식
 const registerSchema = Joi.object({
@@ -41,10 +39,6 @@ router.post("/signup", upload.single('image'), async (req, res) => {
 
     try {
         var profileImg = undefined;
-        // const email = await registerSchema.validateAsync(req.body)
-        // const nickname = await registerSchema.validateAsync(req.body)
-        // const password = await registerSchema.validateAsync(req.body)
-        // const passwordCheck = await registerSchema.validateAsync(req.body)
         const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
 
 
@@ -86,10 +80,6 @@ router.post("/signup", upload.single('image'), async (req, res) => {
 
     } catch (err) {
 
-        // return res.status(400).send({
-        //   errorMessage: "요청한 데이터 형식이 올바르지 않습니다."
-        // })
-
         let whatError = err.details[0].message
         console.log(whatError)
 
@@ -120,7 +110,7 @@ router.post("/login", async (req, res) => {
     console.log(user)
     if (!user) {
         res.status(401).send({
-            errorMessage: "존재하지 않는 이메일입니다."
+            errorMessage: "이메일 또는 비밀번호를 확인해주세요."
         })
         return
     } else {
@@ -129,14 +119,14 @@ router.post("/login", async (req, res) => {
         if (correctPassword) {
             const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);
             const nickname = user.nickname;
-    res.status(200).send({ token, email, nickname })
+            res.status(200).send({ token, email, nickname })
         } else {
-            res.status(400).send({errorMessage: '비밀번호를 확인해주세요.' })
+            res.status(400).send({errorMessage: '이메일 또는 비밀번호를 확인해주세요.' })
         }
     }
 })
 
-// 아이디, 닉네임 중복확인
+// 아이디, 닉네임 중복확인 
 router.post('/idCheck', async (req, res) => {
     const { email, nickname } = req.body;
 
@@ -155,6 +145,8 @@ router.post('/idCheck', async (req, res) => {
     });
 });
 
+
+// 회원 인증하기
 router.get("/getuser", authMiddleware, async (req, res) => {
     const { user } = res.locals;
     const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);

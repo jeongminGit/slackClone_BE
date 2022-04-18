@@ -120,7 +120,8 @@ router.post("/login", async (req, res) => {
         if (correctPassword) {
             const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);
             const nickname = user.nickname;
-    res.status(200).send({ token, email, nickname })
+            const profileImg = user.profileImg;
+    res.status(200).send({ token, email, nickname, profileImg })
         } else {
             res.status(400).send({errorMessage: '비밀번호를 확인해주세요.' })
         }

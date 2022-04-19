@@ -6,7 +6,7 @@ const Joi = require("joi")
 const bcrypt = require('bcrypt')
 const authMiddleware = require("../middlewares/auth");
 const { upload } = require("../middlewares/upload");
-const { json } = require("json")
+// const { json } = require("json")
 const { NONAME } = require("dns");
 // const corsOptions = {
 //     origin: '*',

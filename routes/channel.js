@@ -28,9 +28,6 @@ router.get("/channel/:userId", async (req, res) => {
 
 
 
-
-
-
 //채널 생성
 router.post("/channel/channel",  async (req, res) => {
     //authmiddlewares,

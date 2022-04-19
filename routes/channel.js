@@ -168,7 +168,7 @@ router.get("/channel/:userId", async (req, res) => {
     const {userId} = req.params
     // console.log({userId})
     const channels = await Channel.find({userList:userId});
-    console.log(channels)
+    // console.log(channels)
     res.json({ List : channels });
   });
 
@@ -191,7 +191,7 @@ router.post("/channel/channel",  async (req, res) => {
     // const { user } = res.locals;
     // const userList =user.userList;
     // const isPublic = JSON.parse("true");
-    console.log(channelName,createdAt,channelHost)
+    // console.log(channelName,createdAt,channelHost)
     const result=[await Channel.create({
       channelName,
       createdAt,
@@ -200,29 +200,38 @@ router.post("/channel/channel",  async (req, res) => {
       contentList:[]
     })];
     res.json({result});
-    console.log(result)
+    // console.log(result)
   });
 
 
 
+//   "channelName":"test1",
+//   "createdAt":"test2",
+//   "userList": "[channelHost]",
+//   "channelHost":"test3",
+//   "contentList":[]
 
+// test1 "channelId": "625e19aba43cad0547f9bd2d"
+// test1 "channelId": "625e19caa43cad0547f9bd2f"
 
+// test444 "createdAt": "2022_04_19_11:09", "channelId": "625e19e8a43cad0547f9bd31"
+// test444 "createdAt": "2022_04_19_11:09", "channelId": "625e19f5a43cad0547f9bd33"
 
-
-
-
-
-
+//"channelId": "625e15afa43cad0547f9bd25"
+//"channelId": "625e15c4a43cad0547f9bd27"
+//"channelId": "625e15cda43cad0547f9bd29"
+//"channelId": "625e15d4a43cad0547f9bd2b"
 
 
 
   //게시글 수정 API
-  router.patch("/:channelId/:contentId",(async (req, res) => {
-    const { contentId } = req.params;
-    const content = await contentId.findOne({ contentId: contentId });
+  router.patch("/channel/:channelId",(async (req, res) => {
+    const { channelId } = req.params;
+    const channel = await channelId.findOne( {channelId:channelId} );
+    
     // const userId = res.locals.userId;
 
-    if (content.contentId !== contentId) {
+    if (channel.channelId !== channelId) {
         return res.status(412).json({
             errorMessage: "본인 게시글만 수정 가능합니다.",
         });
@@ -240,12 +249,12 @@ router.post("/channel/channel",  async (req, res) => {
             if (err) {
                 return res.json({ success: false, err });
             }
-            await content.updateOne(
-                { contentId: contentId },
+            await channel.updateOne(
+                { channelId: channelId },
                 {
                     $set: {
-                        content: content,
-                        createdAt: moment(),
+                        channelName: channelName,
+                        
                     },
                 }
             );
@@ -297,10 +306,10 @@ router.post("/channel/channel",  async (req, res) => {
     // });
 }));
 
-
-
-
-
+//"channelId": "625e15afa43cad0547f9bd25"
+//"channelId": "625e15c4a43cad0547f9bd27"
+//"channelId": "625e15cda43cad0547f9bd29"
+//"channelId": "625e15d4a43cad0547f9bd2b"
 
 
 
@@ -309,7 +318,8 @@ router.post("/channel/channel",  async (req, res) => {
 router.delete("/channel/:channelId",  async (req, res) => {
     //authMiddleware, upload.single('imageUrl'),
     const { channelId } = req.params;
-    await Channel.deleteOne({ channelId });
+    await Channel.deleteOne({ _id:channelId });
+    console.log({channelId})
     res.send({ result: '삭제완료' });
   })
   
@@ -335,7 +345,7 @@ router.post("/:channelId/content", async (req, res) => {
     
 
     const channel = await Channel.findOne({  _id:channelId })
-    console.log(channel,"dd")
+    // console.log(channel,"dd")
     channel.contentList.push(contentId) 
         
 
@@ -344,10 +354,10 @@ const doc = await channel.save()
     
 
 
-    console.log(doc,"여기!!")
+    // console.log(doc,"여기!!")
 
     const createdAt = moment().format("YYYY_MM_DD_HH:mm");
-    console.log(content)
+    // console.log(content)
     const contentList =[await ChannelContent.create({
         channelName,
         contentId,
@@ -358,7 +368,7 @@ const doc = await channel.save()
         isEdit : false,
         commentList:[]
     })];
-    console.log(contentList)
+    // console.log(contentList)
   
 
     res.json({contentList});

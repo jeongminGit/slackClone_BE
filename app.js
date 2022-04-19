@@ -7,23 +7,23 @@ const connect = require('./schemas');
 const indexRouter = require('./routes');
 const AWS = require('aws-sdk');
 const port = 3000;
-
-
-//MongoDB 설정
-//mongoose.connect('mongodb://localhost/mydb', {});
-var db = mongoose
-// .connect("mongodb+srv://test:test@cluster0.9zxeb.mongodb.net/cluster0?retryWrites=true&w=majority",{
-.connect("mongodb+srv://SlackClone:slack2022@cluster0.ij7rk.mongodb.net/SlackClone?retryWrites=true&w=majority",{
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        // useCreateIndex: true, //MondDB 6.0 이상에서는 지원 X
-        ignoreUndefined: true
-    })
-    .then(() => console.log('MongoDB 연결완료'))
-    .catch(err =>{console.log(err);
-});
-
 const app = express();
+
+app.use(cors());
+//MongoDB 설정
+
+// var db = mongoose
+// .connect("mongodb+srv://SlackClone:slack2022@cluster0.ij7rk.mongodb.net/SlackClone?retryWrites=true&w=majority",{
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//         // useCreateIndex: true, //MondDB 6.0 이상에서는 지원 X
+//         ignoreUndefined: true
+//     })
+//     .then(() => console.log('MongoDB 연결완료'))
+//     .catch(err =>{console.log(err);
+// });
+
+
 const router = express.Router();
 app.use(bodyParser.json());
 app.use(express.json());
@@ -35,15 +35,17 @@ const requestMiddleware = (req, res, next) => {
     next();
 };
 
+app.use(cors());
 app.use(requestMiddleware);
 app.use('/', indexRouter);
 
-const corsOptions = {
-    origin: '*',
-    // credentials: true
-};
+// const corsOptions = {
+//     origin: '*',
+//     // credentials: true
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
 
 app.listen(port, () => {
     console.log( new Date().toLocaleString() , port, ': connect');

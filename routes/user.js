@@ -39,6 +39,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
     // console.log(req.file)
     try {
         const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
+        // const { email, nickname, password, passwordCheck } = req.body
         if (password.includes(nickname)) {
             res.status(400).send({
                 errorMessage: "사용자의 이름은 비밀번호에 사용할 수 없습니다."
@@ -74,31 +75,31 @@ router.post("/signup", upload.single('image'), async (req, res) => {
         res.status(201).send({ result: 'success' })
 
     } catch (err) {
-        res.status(400).send({
-        errorMessage: "요청한 데이터 형식이 올바르지 않습니다.",
-        })
-        return
+    //     res.status(400).send({
+    //     errorMessage: "요청한 데이터 형식이 올바르지 않습니다.",
+    //     })
+    //     return
         
 
-    //     let whatError = err.details[0].message
-    //     // let whatError = err
-    //     console.log(whatError)
+        let whatError = err.details[0].message
+        // let whatError = err
+        console.log(whatError)
 
-    //     if (whatError.includes('email')) {
-    //         res.status(400).send({
-    //             errorMessage: '이메일 형식을 확인해주세요.'
-    //         })
-    //     }
-    //     if (whatError.includes('nickname')) {
-    //         res.status(400).send({
-    //             errorMessage: '이름 형식을 확인해주세요.'
-    //         })
-    //     }
-    //     if (whatError.includes('password')) {
-    //         res.status(400).send({
-    //             errorMessage: '비밀번호 형식을 확인해주세요.'
-    //         })
-    //     }
+        if (whatError.includes('email')) {
+            res.status(400).send({
+                errorMessage: '이메일 형식을 확인해주세요.'
+            })
+        }
+        if (whatError.includes('nickname')) {
+            res.status(400).send({
+                errorMessage: '이름 형식을 확인해주세요.'
+            })
+        }
+        if (whatError.includes('password')) {
+            res.status(400).send({
+                errorMessage: '비밀번호 형식을 확인해주세요.'
+            })
+        }
     }
 
 })

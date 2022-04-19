@@ -15,30 +15,31 @@ const router = express.Router();
 // router.use(cors(corsOptions));
 
 //  회원 가입 양식
-const registerSchema = Joi.object({
-    email: Joi
-        .string()
-        .required()
-        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-    nickname: Joi
-        .string()
-        .required()
-        .pattern(new RegExp(/^[a-zA-Z0-9가-힣]{2,20}$/)),//영문(대소문자) 한글 숫자 2~20자
-    password: Joi
-        .string()
-        .required()
-        .pattern(new RegExp(/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/)),//영문(대소문자) + 최소 1개의 숫자 혹은 특수 문자 8~20자
-    passwordCheck: Joi
-        .string()
-        .required()
-})
+// const registerSchema = Joi.object({
+//     email: Joi
+//         .string()
+//         .required()
+//         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+//     nickname: Joi
+//         .string()
+//         .required()
+//         .pattern(new RegExp(/^[a-zA-Z0-9가-힣]{2,20}$/)),//영문(대소문자) 한글 숫자 2~20자
+//     password: Joi
+//         .string()
+//         .required()
+//         .pattern(new RegExp(/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/)),//영문(대소문자) + 최소 1개의 숫자 혹은 특수 문자 8~20자
+//     passwordCheck: Joi
+//         .string()
+//         .required()
+// })
 
 //회원가입
 router.post("/signup", upload.single('image'), async (req, res) => {
     const basicImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profileImg.png'
     // console.log(req.file)
-    try {
-        const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
+    // try {
+        // const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
+        const { email, nickname, password, passwordCheck } = req.body
         if (password.includes(nickname)) {
             res.status(400).send({
                 errorMessage: "사용자의 이름은 비밀번호에 사용할 수 없습니다."
@@ -73,11 +74,11 @@ router.post("/signup", upload.single('image'), async (req, res) => {
         console.log(user)
         res.status(201).send({ result: 'success' })
 
-    } catch (err) {
-        res.status(400).send({
-        errorMessage: "요청한 데이터 형식이 올바르지 않습니다.",
-        })
-        return
+    // } catch (err) {
+    //     res.status(400).send({
+    //     errorMessage: "요청한 데이터 형식이 올바르지 않습니다.",
+    //     })
+    //     return
         
 
     //     let whatError = err.details[0].message
@@ -99,7 +100,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
     //             errorMessage: '비밀번호 형식을 확인해주세요.'
     //         })
     //     }
-    }
+    // }
 
 })
 

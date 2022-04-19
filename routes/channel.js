@@ -224,18 +224,90 @@ router.post("/channel/channel",  async (req, res) => {
 
 
 
-  //게시글 수정 API
+
+
+
+
+
+// router.patch("/channel/:channelId",(async (req, res) => {
+//     try {
+//         const { channelId } = req.params;
+//         const { channelName } = req.body;
+
+       
+
+//         await channel.update({
+//             channelName
+//         }, {
+//             where: {
+//                 channelId: commentId
+//             },
+//         });
+//         res.json({ ok: true });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ ok: false, message: '댓글 수정를 실패하였습니다.' });
+//     }
+// }));
+
+
+
+
+
+
+
+// router.patch("/channel/:channelId",(async (req, res) => {
+//     const { channelId } = req.params;
+//     try {
+//         const channel = await channelId.findOne({ {channelId:channelId}});
+  
+//       await channel.update(
+//         {
+//           channelName: channelName,
+//         },
+//         {
+//            $set :{
+//             channelId:channelId
+//           },
+//         }
+//       );
+  
+//       res.status(204).json({
+//         ok: true,
+//         msg: "수정완료!",
+//       });
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   }
+
+
+// )),
+
+
+
+//"channelName":"test300",
+//"channelId": "625e7cd90e67f200522fd618"
+
+
+  //채널 수정 API
   router.patch("/channel/:channelId",(async (req, res) => {
     const { channelId } = req.params;
-    const channel = await channelId.findOne( {channelId:channelId} );
-    
+    const {channelName} = req.body;
+    const channel = await Channel.updateOne( {channelId:channelId},
+        {
+            $set: {
+                channelName: channelName,
+                
+            },
+        }
+    );
+    console.log({channelId})
+    console.log({channelName})
+    res.send();
+    //                      스키마
     // const userId = res.locals.userId;
 
-    if (channel.channelId !== channelId) {
-        return res.status(412).json({
-            errorMessage: "본인 게시글만 수정 가능합니다.",
-        });
-    }
 
     // upload(req, res, async (err) => {
     //     const { content } = req.body;
@@ -245,66 +317,66 @@ router.post("/channel/channel",  async (req, res) => {
     //         imgUrl = req.file.path;
     //     } else imgUrl = post.imgUrl;
 
-        try {
-            if (err) {
-                return res.json({ success: false, err });
-            }
-            await channel.updateOne(
-                { channelId: channelId },
-                {
-                    $set: {
-                        channelName: channelName,
+        // try {
+        //     if (err) {
+        //         return res.json({ success: false, err });
+        //     }
+        //     await channel.updateOne(
+        //         { channelId: channelId },
+        //         {
+        //             $set: {
+        //                 channelName: channelName,
                         
-                    },
-                }
-            );
-            res.send();
-        } catch {
-            res.status(400).json({
-                errorMessage: "게시글 수정 중 오류 발생",
-            });
-        }
+        //             },
+        //         }
+        //     );
+        //     res.send();
+        // } catch {
+        //     res.status(400).json({
+        //         errorMessage: "게시글 수정 중 오류 발생",
+        //     });
+        // }
     // });
 }));
 
 
-  //게시글 수정 API
-  router.patch("/:channelId/:contentId",(async (req, res) => {
-    const { contentId } = req.params;
-    const {  channelName} =req.body;
-    const content = await contentId.findOne({ contentId: contentId });
-    // const userId = res.locals.userId;
+//   //게시글 수정 API
+//   router.patch("/:channelId/:contentId",(async (req, res) => {
+//     const { contentId } = req.params;
+//     const { channelName} =req.body;
+//     const content = await contentId.findOne({ contentId: contentId });
+//     // const userId = res.locals.userId;
 
-    if (content.contentId !== contentId) {
-        return res.status(412).json({
-            errorMessage: "본인 게시글만 수정 가능합니다.",
-        });
-    }
+//     if (content.contentId !== contentId) {
+//         return res.status(412).json({
+//             errorMessage: "본인 게시글만 수정 가능합니다.",
+//         });
+//     }
 
-    // upload(req, res, async (err) => {
-    //     const { content } = req.body;
-    //     let imgUrl;
+//     // upload(req, res, async (err) => {
+//     //     const { content } = req.body;
+//     //     let imgUrl;
 
-    //     if (req.file) {
-    //         imgUrl = req.file.path;
-    //     } else imgUrl = post.imgUrl;
+//     //     if (req.file) {
+//     //         imgUrl = req.file.path;
+//     //     } else imgUrl = post.imgUrl;
 
-        try {
-            if (err) {
-                return res.json({ success: false, err });
-            }
-            await content.updateOne(
-                { contentId: contentId },
-                { channelName },
-            );
-            res.send();
-        } catch {
-            res.status(400).json({
-                errorMessage: "게시글 수정 중 오류 발생",
-            });
-        }
-    // });
-}));
+//         try {
+//             if (err) {
+//                 return res.json({ success: false, err });
+//             }
+//             await content.updateOne(
+//                 { contentId: contentId },
+//                 { channelName },
+//             );
+//             res.send();
+//         } catch {
+//             res.status(400).json({
+//                 errorMessage: "게시글 수정 중 오류 발생",
+//             });
+//         }
+//     // });
+// }));
 
 //"channelId": "625e15afa43cad0547f9bd25"
 //"channelId": "625e15c4a43cad0547f9bd27"

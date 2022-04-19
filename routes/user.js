@@ -38,7 +38,16 @@ const registerSchema = Joi.object({
 router.post("/signup", upload.single('image'), async (req, res) => {
     const basicImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profile.png'
     console.log(req.file)
+    const checkImg = (req.file==undefined)
+    console.log(checkImg)
     try {
+        if (checkImg == true) {
+            var profileImg = basicImg
+            console.log(req.file, profileImg)
+        } else {
+            var profileImg = req.file.location;
+            console.log(profileImg)
+        }
         const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
         // const { email, nickname, password, passwordCheck } = req.body
         if (password.includes(nickname)) {
@@ -47,6 +56,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
             })
             return;
         }
+        console.log("사용자 이름 통과")
 
         if (password !== passwordCheck) {
             res.status(400).send({
@@ -54,6 +64,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
             })
             return;
         }
+        console.log("비밀번호 일치 통과")
 
         const existId = await User.find({ email })
         if (existId.length) {
@@ -62,14 +73,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
             })
             return;
         }
-
-        if (req.file == null || undefined) {
-            var profileImg = basicImg
-            console.log(profileImg)
-        } else {
-            var profileImg = req.file.location;
-            console.log(profileImg)
-        }
+        console.log("이메일 통과")
 
         const hashed = await bcrypt.hash(password, 10)
         const user = new User({ email, nickname, password: hashed, profileImg })

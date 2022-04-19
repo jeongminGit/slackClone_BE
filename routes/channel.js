@@ -319,14 +319,13 @@ router.delete("/channel/:channelId",  async (req, res) => {
 
 // //ContentInChannel
 
-//"channelId": "625d97159630cc4d834748ab"
+//"channelId": "625e0e1577d96f9827860288"
 //"contentId": "0.9353774031667415"
 //채널 내용
 router.post("/:channelId/content", async (req, res) => {
     //authMiddleware, upload.single('imageUrl'),
     const { channelName, nickname, profileImg, content} = req.body;
     const {channelId} = req.params;
-    console.log(channelId)
     const contentId = Math.random()
     // const up = await Channel.updateOne(
     //     { channelId  },
@@ -335,7 +334,8 @@ router.post("/:channelId/content", async (req, res) => {
     // );
     
 
-    const channel = await Channel.findOne({  channelId })
+    const channel = await Channel.findOne({  _id:channelId })
+    console.log(channel,"dd")
     channel.contentList.push(contentId) 
         
 
@@ -371,7 +371,7 @@ const doc = await channel.save()
 //  "channelId": "625d33e5838e2ff086197c83"
 // "channelContentId": "625d215cf1a740fa3136bc87"
 //   "contentId":"11",
-//   "userNickname":"22",
+//   "nickname":"22",
 //   "profileImg":"33",
 //   "content":"44",
 //   "createdAt":"55",

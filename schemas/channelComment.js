@@ -15,10 +15,7 @@ const channelCommentSchema = new mongoose.Schema({
     //유저 닉네임
     type: String,
   },
-  profileImg: {
-    //프로필이미지
-    type: String,
-  },
+
   createdAt: {
     //날짜
     type: String,

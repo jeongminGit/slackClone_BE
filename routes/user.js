@@ -64,8 +64,10 @@ router.post("/signup", upload.single('image'), async (req, res) => {
 
         if (req.file == null || undefined) {
             var profileImg = basicImg
+            console.log(profileImg)
         } else {
             var profileImg = req.file.location;
+            console.log(profileImg)
         }
 
         const hashed = await bcrypt.hash(password, 10)

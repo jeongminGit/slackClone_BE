@@ -18,13 +18,7 @@ router.get("/channel/:userId", async (req, res) => {
     const channels = await Channel.find({userList:userId});
     // console.log(channels)
     res.json({ List : channels });
-  });
-
-//채널아이디 (new Date().getTime()+""),
-// const moment = require(~~)
-// createAt :moment()
-// const now = moment().format("YYYY-MM-DD-HH:mm");
-
+  })
 
 
 
@@ -47,14 +41,6 @@ router.post("/channel/channel",  async (req, res) => {
     res.json({result});
     // console.log(result)
   });
-
-
-
-//   "channelName":"test1",
-//   "createdAt":"test2",
-//   "userList": "[channelHost]",
-//   "channelHost":"test3",
-//   "contentList":[]
 
 
 
@@ -93,7 +79,7 @@ router.delete("/channel/:channelId",  async (req, res) => {
 
 
 
-// //ContentInChannel
+//ContentInChannel
 
 //컨텐츠 생성
 router.post("/:channelId/content", async (req, res) => {
@@ -126,18 +112,6 @@ router.post("/:channelId/content", async (req, res) => {
     res.json({contentList});
 }),
 
-//  "channelId": "625d33e5838e2ff086197c83"
-// "channelContentId": "625d215cf1a740fa3136bc87"
-//   "contentId":"11",
-//   "nickname":"22",
-//   "profileImg":"33",
-//   "content":"44",
-//   "createdAt":"55",
-//   "isEdit" : false,
-//   "commentList":[]
-
-
-
 
 //채널 내용 수정
 router.patch('/:channelId/:contentId', async (req, res) => {
@@ -152,7 +126,6 @@ router.patch('/:channelId/:contentId', async (req, res) => {
 
 
 
-
 //컨텐츠 삭제
 
 
@@ -162,6 +135,7 @@ router.delete("/:channelId/:contentId",  async (req, res) => {
     await ChannelContent.deleteOne({ contentId });
     res.send({ result: '삭제완료' });
   })
+
 
 
 //CommentInchannel
@@ -193,20 +167,6 @@ router.delete("/channelId/:contentId/:commentId",  async (req, res) => {
     await Channel.deleteOne({ commentId });
     res.send({ result: '삭제완료' });
   })
-
-
-  module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
 
 
   module.exports = router;

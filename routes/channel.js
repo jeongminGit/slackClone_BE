@@ -7,10 +7,9 @@ const ChannelContent = require("../schemas/channelContent");
 const ChannelComment = require("../schemas/channelComment");
 const authMiddleware = require("../middlewares/auth");
 const router = express.Router()
-router.use(bodyParser.urlencoded({ extended: false }));
-router.use(bodyParser.json());
-
 const moment = require("moment")
+require("moment-timezone");
+moment.tz.setDefault("Asia/seoul")
 
 
 

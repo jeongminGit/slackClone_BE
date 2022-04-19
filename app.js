@@ -9,6 +9,7 @@ const AWS = require('aws-sdk');
 const port = 3000;
 const app = express();
 
+
 app.use(cors());
 //MongoDB 설정
 

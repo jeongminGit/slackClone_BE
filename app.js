@@ -11,6 +11,9 @@ const app = express();
 
 
 app.use(cors());
+connect();
+
+
 //MongoDB 설정
 
 // var db = mongoose
@@ -36,7 +39,6 @@ const requestMiddleware = (req, res, next) => {
     next();
 };
 
-app.use(cors());
 app.use(requestMiddleware);
 app.use('/', indexRouter);
 

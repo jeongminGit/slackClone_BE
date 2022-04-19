@@ -6,6 +6,7 @@ const Joi = require("joi")
 const bcrypt = require('bcrypt')
 const authMiddleware = require("../middlewares/auth");
 const { upload } = require("../middlewares/upload");
+// const { json } = require("json")
 const { NONAME } = require("dns");
 // const corsOptions = {
 //     origin: '*',
@@ -35,7 +36,7 @@ const registerSchema = Joi.object({
 
 //회원가입
 router.post("/signup", upload.single('image'), async (req, res) => {
-    const basicImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profileImg.png'
+    const basicImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profile.png'
     console.log(req.file)
     try {
         const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)

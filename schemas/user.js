@@ -17,7 +17,12 @@ const UserSchema = new mongoose.Schema({
   profileImg: {
     type: String,
     required: true
+  },
+  userId: {
+    type: String
   }
+
+  
   
 });
 

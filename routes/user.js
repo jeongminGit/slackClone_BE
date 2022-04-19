@@ -40,6 +40,8 @@ router.post("/signup", upload.single('image'), async (req, res) => {
     console.log(req.file)
     const checkImg = (req.file==undefined)
     console.log(checkImg)
+    const userId = Math.random().toString(36).substr(3)
+
     try {
         if (checkImg == true) {
             var profileImg = basicImg
@@ -76,7 +78,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
         console.log("이메일 통과")
 
         const hashed = await bcrypt.hash(password, 10)
-        const user = new User({ email, nickname, password: hashed, profileImg })
+        const user = new User({ email, nickname, password: hashed, profileImg,  })
         await user.save()
         console.log(user)
         res.status(201).send({ result: 'success' })
@@ -163,13 +165,12 @@ router.post("/signup", upload.single('image'), async (req, res) => {
 
     router.get("/getuser", authMiddleware, async (req, res) => {
         const { user } = res.locals;
-        const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);
-        console.log(user[0], token)
+        console.log(user[0])
         res.send({
             email: user[0].email,
             nickname: user[0].nickname,
             profileImg: user[0].profileImg,
-            token: token
+            userId: user[0].userId,
         });
     });
 

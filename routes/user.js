@@ -36,7 +36,7 @@ const registerSchema = Joi.object({
 //회원가입
 router.post("/signup", upload.single('image'), async (req, res) => {
     const basicImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profileImg.png'
-    // console.log(req.file)
+    console.log(req.file)
     try {
         const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
         // const { email, nickname, password, passwordCheck } = req.body

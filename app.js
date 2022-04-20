@@ -49,6 +49,11 @@ const requestMiddleware = (req, res, next) => {
 app.use(requestMiddleware);
 app.use('/', indexRouter);
 
+// auth 사용(token값 사용)
+// io.use((socket, next) => {
+//     const token = socket.handshake.auth.token;
+// })
+
 //소켓추가
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
@@ -61,36 +66,19 @@ io.on("connection", (socket)=> {
                 // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
                 // console.log(dbData.name, dbData.message)
                 // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-                io.emit("receive message", {name : JSON.stringify(payload.name), message : result[i].message, createdAt : result[i].createdAt})
+                io.emit("receive message", {nickname : JSON.stringify(payload.name), message : result[i].message, createdAt : result[i].createdAt})
             }
         });
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
         console.log(item.name + " : " + item.message + " : " + item.createdAt);
-        io.emit("receive message", { nickname: item.name, message: item.message, createdAt: item.createdAt});
-        var chat = new Chat({ nickname: item.name, message: item.message, createdAt: item.createdAt });
+        io.emit("receive message", { nickname: item.name, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
+        var chat = new Chat({ nickname: item.name, message: item.message, createdAt: item.createdAt, profileImg });
         console.log(chat)
         console.log(item)
         chat.save(item)
        
-       //클라이언트에 이벤트를 보냄
      });
-    // sends message to other users + stores data(username + message) into DB
-    // socket.on('message', function(data) {
- 
-    //     io.emit('message', data);
-    //     // add chat into the model
-    //     var chat = new Chat({ name: data.name, message: data.message });
- 
-    //     chat.save(function (err, data) {
-    //       if (err) {// TODO handle the error
-    //           console.log("error");
-    //       }
-    //       console.log('message is inserted');
-    //     });
- 
-    // });
-
     
 })
 

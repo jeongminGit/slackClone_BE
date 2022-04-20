@@ -56,10 +56,10 @@ io.on("connection", (socket)=> {
     // console.log(user)
     Chat.find(function (err, result) {
         console.log(socket.id)
-        for(var i = result.length-1 ; i >= result.length-10 ; i--) {
-            var dbData = {name : result[i].name, message : result[i].message};
+        for(var i = result.length-1 ; i >= 0; i--) {
+            var dbData = {name : result[i].name, message : result[i].message, createdAt : result[i].message};
             // console.log(dbData.name, dbData.message)
-            io.emit("receive message", { name : dbData.name, message : dbData.message })
+            io.emit("receive message", { name : dbData.name, message : dbData.message, createdAt: dbData.createdAt })
         }
     });
     socket.on("init", (payload) => {
@@ -67,8 +67,8 @@ io.on("connection", (socket)=> {
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
         console.log(item.name + " : " + item.message);
-        io.emit("receive message", { name: item.name, message: item.message });
-        var chat = new Chat({ name:item.name, message: item.message });
+        io.emit("receive message", { name: item.name, message: item.message, createdAt: item.createdAt});
+        var chat = new Chat({ name:item.name, message: item.message, createdAt: item.createdAt });
         chat.save(item)
        
        //클라이언트에 이벤트를 보냄

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const ChatSchema = new mongoose.Schema({
 
   // 소켓 db schema 생성
-  nickname: {
+  name: {
     type: String
   },
   message: {

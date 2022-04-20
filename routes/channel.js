@@ -125,9 +125,20 @@ router.patch('/:channelId/:contentId',authMiddleware, async (req, res) => {
 
 
 // 게시글 삭제 API
-router.delete("/:channelId/:contentId",authMiddleware, async (req, res) => {    
-    const { contentId } = req.params;
+router.delete("/:channelId/:contentId", async (req, res) => {    
+    const { channelId, contentId } = req.params;
 
+    //Channel에서 Content 삭제
+    // Channel.findOneAndUpdate(
+    //     { channelId },
+    //     { $pull: {contentList: contentId}},
+    //     { new: true},
+    //     function(err) {
+    //         if(err) {console.log(err)}
+    //     }
+    // )
+
+    //Content 삭제
     await ChannelContent.deleteOne({contentId});
 
     return res.status(200).send({ msg: 'success' });

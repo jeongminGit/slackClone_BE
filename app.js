@@ -89,6 +89,9 @@ io.on("connection", (socket)=> {
             }
         // console.log(arr, arr.reverse())
         io.to(socket.id).emit("receive message", arr.reverse())
+        const req = socket.request;
+        const { headers: { referer } } = req;
+        const roomId = referer
         });
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
@@ -99,6 +102,9 @@ io.on("connection", (socket)=> {
         // console.log("chat입니다----------------------@@@@@@@@@@", chat)
         // console.log("item입니다----------------------!!!!!!!!!!", item)
         Chat.create(item)
+        const req = socket.request;
+        const { headers: { referer } } = req;
+        const roomId = referer
        
      });
     

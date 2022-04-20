@@ -8,23 +8,25 @@ const indexRouter = require('./routes');
 const AWS = require('aws-sdk');
 const port = 3000;
 const app = express();
-const webSocket = require('./socket')
 
-
-app.use(cors());
-connect();
+// mongoose model compile
+var Chat = mongoose.model('Chat', ChatSchema)
 
 //소켓
 const socketIo = require('socket.io')
 const server = require('http').createServer(app)
 // // 모든 도메인 허용 
+
 const io = socketIo(server, {
-  cors : {
-      origin:"*", //여기에 명시된 서버만 호스트만 내서버로 연결을 허용할거야
-      methods: ["GET","POST"],
-  },
+    cors : {
+        origin:"*", //여기에 명시된 서버만 호스트만 내서버로 연결을 허용할거야
+        methods: ["GET","POST"],
+    },
 })
-webSocket(server, app)
+
+
+app.use(cors());
+connect();
 
 const router = express.Router();
 app.use(bodyParser.json());
@@ -40,10 +42,49 @@ const requestMiddleware = (req, res, next) => {
 app.use(requestMiddleware);
 app.use('/', indexRouter);
 
+//소켓추가
+io.on("connection", (socket)=> {
+    console.log("연결이되었습니다.")
+    Chat.find(function (err, result) {
+        for(var i = 0 ; i < result.length ; i++) {
+            var dbData = {name : result[i].name, message : result[i].message};
+            // io.sockets.sockets[socket.id].emit('preload', dbData);
+            console.log(dbData)
+        }
+    });
+    socket.on("init", (payload) => {
+        console.log(payload)
+    })
+    socket.on("send message", (item) => {//send message 이벤트 발생
+        console.log(item.name + " : " + item.message);
+        io.emit("receive message", { name: item.name, message: item.message });
+        var chat = new Chat({ name:item.name, message: item.message });
+        chat.save(item)
+       
+       //클라이언트에 이벤트를 보냄
+     });
+    // sends message to other users + stores data(username + message) into DB
+    // socket.on('message', function(data) {
+ 
+    //     io.emit('message', data);
+    //     // add chat into the model
+    //     var chat = new Chat({ name: data.name, message: data.message });
+ 
+    //     chat.save(function (err, data) {
+    //       if (err) {// TODO handle the error
+    //           console.log("error");
+    //       }
+    //       console.log('message is inserted');
+    //     });
+ 
+    // });
+
+    
+})
+
 
 server.listen(port, () => {
     console.log( new Date().toLocaleString() , port, ': connect');
 });
-
 
 module.exports = app

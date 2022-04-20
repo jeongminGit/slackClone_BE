@@ -54,8 +54,8 @@ io.on("connection", (socket)=> {
     Chat.find(function (err, result) {
         for(var i = result.length-1 ; i >= result.length-10 ; i--) {
             var dbData = {name : result[i].name, message : result[i].message};
-            console.log(dbData.name, dbData.message)
-            // io.emit("last message", { name : dbData.name, message : dbData.message })     
+            // console.log(dbData.name, dbData.message)
+            io.emit("receive message", { name : dbData.name, message : dbData.message })
         }
     });
     socket.on("init", (payload) => {

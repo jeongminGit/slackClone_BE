@@ -52,7 +52,7 @@ app.use('/', indexRouter);
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
     Chat.find(function (err, result) {
-        for(var i = result.length ; i < result.length-10 ; i--) {
+        for(var i = result.length-1 ; i >= result.length-10 ; i--) {
             var dbData = {name : result[i].name, message : result[i].message};
             // io.sockets.sockets[socket.id].emit('preload', dbData);
             console.log(dbData)

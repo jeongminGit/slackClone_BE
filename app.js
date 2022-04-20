@@ -49,8 +49,10 @@ app.use(requestMiddleware);
 app.use('/', indexRouter);
 
 //소켓추가
-io.on("connection", (socket)=> {
+io.on("connection", authmiddleware, (socket)=> {
     console.log("연결이되었습니다.")
+    const {user} = res.locals
+    console.log(user)
     Chat.find(function (err, result) {
         console.log(socket.id)
         for(var i = result.length-1 ; i >= result.length-10 ; i--) {

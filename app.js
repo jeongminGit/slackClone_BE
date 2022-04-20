@@ -56,7 +56,7 @@ io.on("connection", (socket)=> {
         // console.log(socket.id)
         console.log(result)
         for(var i = result.length-1 ; i >= 0; i--) {
-            var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].message};
+            var dbData = {nickname : result[i].name, message : result[i].message, createdAt : result[i].message};
             // console.log(dbData.name, dbData.message)
             io.emit("receive message", { nickname : dbData.nickname, message : dbData.message, createdAt: dbData.createdAt })
         }
@@ -67,9 +67,9 @@ io.on("connection", (socket)=> {
         console.log("--------------"+JSON.stringify(payload)+"--------------")
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
-        console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
-        io.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt});
-        var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt });
+        console.log(item.name + " : " + item.message + " : " + item.createdAt);
+        io.emit("receive message", { nickname: item.name, message: item.message, createdAt: item.createdAt});
+        var chat = new Chat({ nickname: item.name, message: item.message, createdAt: item.createdAt });
         console.log(chat)
         console.log(item)
         chat.save(item)

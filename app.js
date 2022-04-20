@@ -72,8 +72,8 @@ io.on("connection", (socket)=> {
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
         console.log(item.name + " : " + item.message + " : " + item.createdAt);
-        io.emit("receive message", { nickname: item.name, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
-        var chat = new Chat({ nickname: item.name, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
+        io.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
+        var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
         console.log(chat)
         console.log(item)
         chat.save(item)

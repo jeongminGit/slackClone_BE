@@ -60,7 +60,7 @@ app.use('/', indexRouter);
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
     socket.on("init", (payload) => {
-        console.log("--------------"+JSON.stringify(payload), JSON.stringify(payload.name)+"--------------")
+        console.log("--------------"+JSON.stringify(payload)+"--------------")
         Chat.find(function (err, result) {
             // console.log(socket.id)
             for(var i = result.length-1 ; i >= result.length-10; i--) {
@@ -68,7 +68,7 @@ io.on("connection", (socket)=> {
                 // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
                 // console.log(dbData.name, dbData.message)
                 // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-                io.emit("receive message", {nickname : JSON.stringify(payload.name), message : result[i].message, createdAt : result[i].createdAt})
+                io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
         });
     })

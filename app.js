@@ -11,8 +11,8 @@ const app = express();
 
 // 소켓 db schema 생성
 var userSchema = mongoose.Schema({
-    nickname: 'string',
-    message: 'string'
+    nickname: {type: String},
+    message: {type: String}
 })
 
 // mongoose model compile
@@ -57,13 +57,15 @@ io.on("connection", (socket)=> {
             io.sockets.sockets[socket.id].emit('preload', dbData);
         }
     });
- 
+    socket.on("init", (payload) => {
+        console.log(payload)
+    })
     // sends message to other users + stores data(username + message) into DB
     socket.on('message', function(data) {
  
-        io.sockets.emit('message', data);
+        io.emit('message', data);
         // add chat into the model
-        var chat = new Chat({ username: data.name, message: data.message });
+        var chat = new Chat({ name: data.name, message: data.message });
  
         chat.save(function (err, data) {
           if (err) {// TODO handle the error
@@ -74,9 +76,6 @@ io.on("connection", (socket)=> {
  
     });
 
-    // socket.on("init", (payload) => {
-    //     console.log(payload)
-    // })
     // socket.on("send message", (item) => {//send message 이벤트 발생
     //     console.log(item.name + " : " + item.message);
     //    io.emit("receive message", { name: item.name, message: item.message });

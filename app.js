@@ -20,7 +20,8 @@ var userSchema = mongoose.Schema({
 var Chat = mongoose.model('Chat', userSchema)
 
 //소켓
-const socketIo = require('socket.io')
+const socketIo = require('socket.io');
+const { create } = require('./schemas/user');
 const server = require('http').createServer(app)
 // // 모든 도메인 허용 
 
@@ -73,10 +74,10 @@ io.on("connection", (socket)=> {
     socket.on("send message", (item) => {//send message 이벤트 발생
         console.log(item.name + " : " + item.message + " : " + item.createdAt);
         io.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
-        var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
+        // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
         console.log("chat입니다----------------------@@@@@@@@@@", chat)
         console.log("item입니다----------------------!!!!!!!!!!", item)
-        chat.save(item)
+        Chat.create(item)
        
      });
     

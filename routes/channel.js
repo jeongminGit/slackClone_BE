@@ -7,7 +7,8 @@ const ChannelContent = require("../schemas/channelContent");
 const ChannelComment = require("../schemas/channelComment");
 const authMiddleware = require("../middlewares/auth");
 const router = express.Router()
-const moment = require("moment")
+const moment = require("moment");
+const { listeners } = require("process");
 require("moment-timezone");
 moment.tz.setDefault("Asia/seoul")
 
@@ -128,15 +129,18 @@ router.patch('/:channelId/:contentId',authMiddleware, async (req, res) => {
 router.delete("/:channelId/:contentId", async (req, res) => {    
     const { channelId, contentId } = req.params;
 
-    //Channel에서 Content 삭제
-    // Channel.findOneAndUpdate(
-    //     { channelId },
-    //     { $pull: {contentList: contentId}},
-    //     { new: true},
-    //     function(err) {
-    //         if(err) {console.log(err)}
-    //     }
-    // )
+    // Channel에서 Content 삭제
+    const channel = await Channel.findOne({ _id: channelId})
+    const lists = []
+
+    for (const content of channel.contentList){
+
+        if (content !== contentId){
+            lists.push(content)
+        } 
+    }
+    channel.contentList = lists;
+    const doc = await channel.save()
 
     //Content 삭제
     await ChannelContent.deleteOne({contentId});

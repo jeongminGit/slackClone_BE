@@ -55,9 +55,9 @@ io.on("connection", (socket)=> {
         for(var i = 0 ; i < result.length ; i++) {
             var dbData = {name : result[i].nickname, message : result[i].message};
             io.sockets.sockets[socket.id].emit('preload', dbData);
+            console.log(dbData)
         }
     });
-    console.log(dbData)
     socket.on("init", (payload) => {
         console.log(payload)
     })

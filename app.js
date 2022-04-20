@@ -59,19 +59,19 @@ app.use('/', indexRouter);
 //소켓추가
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
-    // socket.on("init", (payload) => {
-    //     console.log("--------------"+JSON.stringify(payload), JSON.stringify(payload.name)+"--------------")
-    //     Chat.find(function (err, result) {
-    //         // console.log(socket.id)
-    //         for(var i = result.length-1 ; i >= result.length-4; i--) {
-    //             console.log(result[i])
-    //             // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
-    //             // console.log(dbData.name, dbData.message)
-    //             // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-    //             io.emit("receive message", {nickname : JSON.stringify(payload.name), message : result[i].message, createdAt : result[i].createdAt})
-    //         }
-    //     });
-    // })
+    socket.on("init", (payload) => {
+        console.log("--------------"+JSON.stringify(payload), JSON.stringify(payload.name)+"--------------")
+        Chat.find(function (err, result) {
+            // console.log(socket.id)
+            for(var i = result.length-1 ; i >= result.length-10; i--) {
+                console.log(result[i])
+                // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
+                // console.log(dbData.name, dbData.message)
+                // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
+                io.emit("receive message", {nickname : JSON.stringify(payload.name), message : result[i].message, createdAt : result[i].createdAt})
+            }
+        });
+    })
     socket.on("send message", (item) => {//send message 이벤트 발생
         console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
         io.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});

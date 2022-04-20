@@ -74,13 +74,13 @@ io.on("connection", (socket)=> {
     socket.on("init", (payload) => {
         // console.log(req.locals)
         // const existUser = (JSON.stringify(payload.user.email) == )
-        console.log("--------------"+JSON.stringify(payload)+"--------------")
-        console.log(socket.id)
+        // console.log("--------------"+JSON.stringify(payload)+"--------------")
+        // console.log(socket.id)
         Chat.find(function (err, result) {
             // console.log(socket.id)
             const arr = []
             for(var i = result.length-1 ; i >= result.length-10; i--) {
-                console.log(result[i])
+                // console.log(result[i])
                 // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
                 // console.log(dbData.name, dbData.message)
                 // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})

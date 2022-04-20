@@ -17,7 +17,7 @@ module.exports = (server, app) => {
 
 
 //소켓추가
-chat.on("connection", authMiddleware, (socket)=> {
+chat.on("connection", (socket)=> {
   console.log("연결이되었습니다.")
   Chat.find(function (err, result) {
       for(var i = 0 ; i < result.length ; i++) {

@@ -51,36 +51,36 @@ app.use('/', indexRouter);
 //소켓추가
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
-    Chat.find(function (err, result) {
-        for(var i = 0 ; i < result.length ; i++) {
-            var dbData = {name : result[i].nickname, message : result[i].message};
-            io.sockets.sockets[socket.id].emit('preload', dbData);
-        }
-    });
+    // Chat.find(function (err, result) {
+    //     for(var i = 0 ; i < result.length ; i++) {
+    //         var dbData = {name : result[i].nickname, message : result[i].message};
+    //         io.sockets.sockets[socket.id].emit('preload', dbData);
+    //     }
+    // });
     socket.on("init", (payload) => {
         console.log(payload)
     })
     // sends message to other users + stores data(username + message) into DB
-    socket.on('message', function(data) {
+    // socket.on('message', function(data) {
  
-        io.emit('message', data);
-        // add chat into the model
-        var chat = new Chat({ name: data.name, message: data.message });
+    //     io.emit('message', data);
+    //     // add chat into the model
+    //     var chat = new Chat({ name: data.name, message: data.message });
  
-        chat.save(function (err, data) {
-          if (err) {// TODO handle the error
-              console.log("error");
-          }
-          console.log('message is inserted');
-        });
+    //     chat.save(function (err, data) {
+    //       if (err) {// TODO handle the error
+    //           console.log("error");
+    //       }
+    //       console.log('message is inserted');
+    //     });
  
-    });
+    // });
 
-    // socket.on("send message", (item) => {//send message 이벤트 발생
-    //     console.log(item.name + " : " + item.message);
-    //    io.emit("receive message", { name: item.name, message: item.message });
-    //    //클라이언트에 이벤트를 보냄
-    //  });
+    socket.on("send message", (item) => {//send message 이벤트 발생
+        console.log(item.name + " : " + item.message);
+       io.emit("receive message", { name: item.name, message: item.message });
+       //클라이언트에 이벤트를 보냄
+     });
 })
 
 

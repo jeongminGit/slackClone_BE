@@ -50,7 +50,7 @@ app.use(requestMiddleware);
 app.use('/', indexRouter);
 
 //소켓추가
-io.on("connection", authmiddleware, (socket)=> {
+io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
     const {user} = res.locals
     console.log(user)

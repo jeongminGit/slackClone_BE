@@ -60,6 +60,8 @@ app.use('/', indexRouter);
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
     socket.on("init", (payload) => {
+        console.log(req.locals)
+        // const existUser = (JSON.stringify(payload.user.email) == )
         console.log("--------------"+JSON.stringify(payload)+"--------------")
         Chat.find(function (err, result) {
             // console.log(socket.id)

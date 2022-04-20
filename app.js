@@ -17,7 +17,7 @@ var userSchema = mongoose.Schema({
 })
 
 // mongoose model compile
-var Chat = mongoose.model('Chat', userSchema)
+var Chat = mongoose.model('Chat', ChatSchema)
 
 //소켓
 const socketIo = require('socket.io');

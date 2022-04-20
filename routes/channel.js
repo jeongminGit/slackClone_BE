@@ -58,6 +58,7 @@ router.post("/channel/channel",authMiddleware, async (req, res) => {
 router.patch("/channel/:channelId",authMiddleware, async(req, res) => {
     const { channelId } = req.params;
     const {channelName} = req.body;
+    console.log(channelId, channelName)
 
     const channel = await Channel.updateOne({_id:channelId},
         {$set:{channelName: channelName}}

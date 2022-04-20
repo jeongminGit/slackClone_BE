@@ -114,7 +114,7 @@ router.patch('/:channelId/:contentId',authMiddleware, async (req, res) => {
     const { contentId } = req.params;
     const {  content  } = req.body;
 
-    const editContent = await ChannelContent.updateOne({ contentId },{ $set:{content } });
+    const editContent = await ChannelContent.updateOne({ contentId },{ $set:{content :content, isEdit: true} });
     
     const sendContent = await ChannelContent.findOne({contentId},    
         {_id:0, contentId:1, content:1, createdAt:1, isEdit:1 })

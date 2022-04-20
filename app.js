@@ -61,7 +61,7 @@ app.use('/', indexRouter);
 io.on("connection", (socket)=> {
     // const room = io.of('/room')
     // const chat = io.of('/chat')
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+JSON.stringify(socket.request))
     console.log("연결이되었습니다.")
     socket.on("init", (payload) => {
         // console.log(req.locals)

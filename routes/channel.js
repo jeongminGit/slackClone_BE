@@ -37,7 +37,7 @@ router.get("/channel/:userId",authMiddleware, async (req, res) => {
 //채널 생성 API
 router.post("/channel/channel",authMiddleware, async (req, res) => {
     const { channelName,  nickname } = req.body;
-    const createdAt = moment().format("YYYY_MM_DD_HH:mm");
+    const createdAt = moment().format("YYYY-MM-DD HH:mm");
         
     const isPublic = JSON.parse("true");
 
@@ -86,7 +86,7 @@ router.post("/:channelId/content",authMiddleware, async (req, res) => {
     const { channelId } = req.params;
 
     const contentId = Math.random().toString(36).substr(3)
-    const createdAt = moment().format("YYYY_MM_DD_HH:mm")
+    const createdAt = moment().format("YYYY-MM-DD HH:mm")
 
     const channel = await Channel.findOne({  _id:channelId })
     channel.contentList.push(contentId)       
@@ -141,7 +141,7 @@ router.post("/:channelId/:contentId/comment",authMiddleware, async (req, res) =>
     const {user} =res.locals
 
     const commentId = Math.random().toString(36).substr(3)
-    const createdAt = moment().format("YYYY_MM_DD_HH:mm");
+    const createdAt = moment().format("YYYY-MM-DD HH:mm");
    
     // ProfileImg  //로그인 통합후 authmiddleware와 함께 오픈!
     const userinfo = await User.findOne({user})  

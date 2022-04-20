@@ -19,12 +19,12 @@ app.set('io', io);
 router.get('/',async (req, res, next) => { //==============> 프론트에서 확인 주소:"message/"
   try {
     
-    const {user} = res.locals; 
-    console.log(user.userId)
+    // const {user} = res.locals; 
+    // console.log(user.userId)
 
-    const rooms = await Room.find({users: user.userId});
+    // const rooms = await Room.find({users: user.userId});
   
-
+    const rooms = await Room.find({});
     // 'main'은 main.html를 가리킴 ===================================> 프론트에서 확인
     res.render('main', { rooms, users:'채팅방 생성' });
     
@@ -36,7 +36,7 @@ router.get('/',async (req, res, next) => { //==============> 프론트에서 확
 
 
 // DirectMessage_Room: 메인화면 '채팅방생성'버튼 클릭시 정보보내기
-router.get('/room',authMiddleware, (req, res) => {
+router.get('/room', (req, res) => {
   // 'room'은 room.html를 가리킴 ===================================> 프론트에서 확인
   res.render('room', { users: '채팅방 생성' });
   console.log
@@ -44,7 +44,7 @@ router.get('/room',authMiddleware, (req, res) => {
 
 
 // DirectMessage_Room: 생성화면 '생성'버튼 클릭시 정보보내기 (친구추가 부분)
-router.post('/room',authMiddleware, async (req, res, next) => {
+router.post('/room', async (req, res, next) => {
   try {
     // 1. 친구리스트 주기 (메시지방 생성시 친구검색시 나오는 친구리스트)
     const users = await User.find({});
@@ -80,7 +80,7 @@ router.post('/room',authMiddleware, async (req, res, next) => {
 
 
 // DirectMessage_Room: 메시지방 들어갈때 정보보내기 
-router.get('/room/:id',authMiddleware, async (req, res, next) => {
+router.get('/room/:id', async (req, res, next) => {
   try {
     const {user} = res.locals;
     console.log(user.userId,'<<<<<<')
@@ -103,7 +103,7 @@ router.get('/room/:id',authMiddleware, async (req, res, next) => {
 
 
 // DirectMessage_Room: 채팅 DB 저장하기
-router.post('/room/:id/chat',authMiddleware, async (req, res, next) => {
+router.post('/room/:id/chat', async (req, res, next) => {
   try {
     const {user} = res.locals;
     const chat = await Chat.create({

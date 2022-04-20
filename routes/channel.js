@@ -36,7 +36,7 @@ router.get("/channel/:userId",authMiddleware, async (req, res) => {
 
 //채널 생성 API
 router.post("/channel/channel",authMiddleware, async (req, res) => {
-    const { channelName,  channelHost } = req.body;
+    const { channelName,  nickname } = req.body;
     const createdAt = moment().format("YYYY_MM_DD_HH:mm");
         
     const isPublic = JSON.parse("true");
@@ -44,8 +44,8 @@ router.post("/channel/channel",authMiddleware, async (req, res) => {
     const result= await Channel.create({
       channelName,
       createdAt,
-      userList: [channelHost],
-      channelHost,
+      userList: [nickname],
+      channelHost: nickname,
       contentList:[]
     });
 

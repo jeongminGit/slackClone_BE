@@ -37,52 +37,42 @@ const registerSchema = Joi.object({
 //회원가입
 router.post("/signup", upload.single('image'), async (req, res) => {
     const basicImg = 'https://slackclone-be.s3.ap-northeast-2.amazonaws.com/profileImg/basic_profile.png'
-    console.log(req.file)
-    const checkImg = (req.file==undefined)
-    console.log(checkImg)
-    const userId = Math.random().toString(36).substr(3)
-
+    // console.log(req.file)
+    const checkImg = req.file
+    // console.log(checkImg)
+    // 에러 뱉는 함수
+    const returnError = (msg) => {
+        console.log("----------확인용----------")
+        res.status(400).send({ errorMessage: msg });
+    }
     try {
-        if (checkImg == true) {
-            var profileImg = basicImg
-            console.log(req.file, profileImg)
+        let profileImg = "";
+        if (!checkImg) {
+            profileImg = basicImg
+            // console.log(req.file, profileImg)
         } else {
-            var profileImg = req.file.location;
-            console.log(profileImg)
+            profileImg = req.file.location;
+            // console.log(profileImg)
         }
         const { email, nickname, password, passwordCheck } = await registerSchema.validateAsync(req.body)
-        // const { email, nickname, password, passwordCheck } = req.body
         if (password.includes(nickname)) {
-            res.status(400).send({
-                errorMessage: "사용자의 이름은 비밀번호에 사용할 수 없습니다."
-            })
-            return;
+            return returnError("사용자의 이름은 비밀번호에 사용할 수 없습니다.");
         }
-        console.log("사용자 이름 통과")
-
         if (password !== passwordCheck) {
-            res.status(400).send({
-                errorMessage: '비밀번호가 동일하지 않습니다.',
-            })
-            return;
-        }
-        console.log("비밀번호 일치 통과")
-
-        const existId = await User.find({ email })
-        if (existId.length) {
-            res.status(400).send({
-                errorMessage: '이미 사용 중인 이메일입니다.'
-            })
-            return;
-        }
-        console.log("이메일 통과")
-
+            return returnError("비밀번호가 동일하지 않습니다.");
+        }  
+        // console.log("비밀번호 일치 통과")
+        const existId = await User.findOne({ email })
+        console.log(existId)
+        if (existId) {
+            return returnError("이미 사용 중인 이메일입니다.");
+        }         
+        // console.log("이메일 중복체크 통과")
         const hashed = await bcrypt.hash(password, 10)
-        const user = new User({ email, nickname, password: hashed, profileImg,  })
+        const user = new User({ email, nickname, password: hashed, profileImg })
         await user.save()
-        console.log(user)
+        // console.log(user)
         res.status(201).send({ result: 'success' })
-
     } catch (err) {
         res.status(400).send({
             errorMessage: "요청한 데이터 형식이 올바르지 않습니다.",
@@ -165,12 +155,13 @@ router.post("/signup", upload.single('image'), async (req, res) => {
 
     router.get("/getuser", authMiddleware, async (req, res) => {
         const { user } = res.locals;
-        console.log(user[0])
+        const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);
+        console.log(user[0], token)
         res.send({
             email: user[0].email,
             nickname: user[0].nickname,
             profileImg: user[0].profileImg,
-            userId: user[0].userId,
+            token: token
         });
     });
 

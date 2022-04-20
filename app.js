@@ -63,7 +63,7 @@ io.on("connection", (socket)=> {
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
         console.log(item.name + " : " + item.message);
-       io.emit("receive message", { name: item.name, message: item.message });
+       io.socket.emit("receive message", { name: item.name, message: item.message });
        var chat = new Chat({ name:item.name, message: item.message });
        chat.save(item)
        

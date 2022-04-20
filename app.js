@@ -6,6 +6,7 @@ const cors = require('cors');
 const connect = require('./schemas');
 const indexRouter = require('./routes');
 const AWS = require('aws-sdk');
+const authmiddleware = requrie('./middlewares/auth')
 const port = 3000;
 const app = express();
 

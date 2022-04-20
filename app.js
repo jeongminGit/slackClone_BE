@@ -56,8 +56,12 @@ app.use('/', indexRouter);
 //     const token = socket.handshake.auth.token;
 // })
 
+
 //소켓추가
 io.on("connection", (socket)=> {
+    // const room = io.of('/room')
+    // const chat = io.of('/chat')
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
     console.log("연결이되었습니다.")
     socket.on("init", (payload) => {
         // console.log(req.locals)

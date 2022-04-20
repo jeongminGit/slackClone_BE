@@ -11,7 +11,10 @@ const ChatSchema = new mongoose.Schema({
   },
   createdAt: {
     type: String
-  }
+  },
+  profileImg: {
+    type: String
+  },
   
 });
 

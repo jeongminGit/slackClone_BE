@@ -72,16 +72,17 @@ io.on("connection", (socket)=> {
                 // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
+        console.log(arr, arr.reverse())
         io.emit("receive message", arr)
         });
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
-        console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
+        // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
         io.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
-        console.log(item.createdAt, item.profileImg)
+        // console.log(item.createdAt, item.profileImg)
         // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
         // console.log("chat입니다----------------------@@@@@@@@@@", chat)
-        console.log("item입니다----------------------!!!!!!!!!!", item)
+        // console.log("item입니다----------------------!!!!!!!!!!", item)
         Chat.create(item)
        
      });

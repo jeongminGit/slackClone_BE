@@ -72,8 +72,7 @@ io.on("connection", (socket)=> {
                 // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
-            console.log(arr, arr.reverse())
-        io.emit("receive message", arr.reverse())
+        io.emit("receive message", arr)
         });
     })
     socket.on("send message", (item) => {//send message 이벤트 발생

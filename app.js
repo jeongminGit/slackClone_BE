@@ -66,7 +66,7 @@ io.on("connection", (socket)=> {
         console.log(payload)
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
-        console.log(item.name + " : " + item.message);
+        console.log(item.name + " : " + item.message + " : " + item.createdAt);
         io.emit("receive message", { name: item.name, message: item.message, createdAt: item.createdAt});
         var chat = new Chat({ name:item.name, message: item.message, createdAt: item.createdAt });
         chat.save(item)

@@ -9,8 +9,14 @@ const AWS = require('aws-sdk');
 const port = 3000;
 const app = express();
 
+// 소켓 db schema 생성
+var userSchema = mongoose.Schema({
+    nickname: {type: String},
+    message: {type: String}
+})
+
 // mongoose model compile
-var Chat = mongoose.model('Chat', ChatSchema)
+var Chat = mongoose.model('Chat', userSchema)
 
 //소켓
 const socketIo = require('socket.io')

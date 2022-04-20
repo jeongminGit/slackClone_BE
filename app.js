@@ -49,19 +49,18 @@ const requestMiddleware = (req, res, next) => {
 app.use(requestMiddleware);
 app.use('/', indexRouter);
 
-Chat.find(function (err, result) {
-    // console.log(socket.id)
-    console.log(result)
-    for(var i = result.length-1 ; i >= 0; i--) {
-        var dbData = {name : result[i].name, message : result[i].message, createdAt : result[i].message};
-        // console.log(dbData.name, dbData.message)
-        io.emit("receive message", { name : dbData.name, message : dbData.message, createdAt: dbData.createdAt })
-    }
-});
-
 //소켓추가
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
+    Chat.find(function (err, result) {
+        // console.log(socket.id)
+        console.log(result)
+        for(var i = result.length-1 ; i >= 0; i--) {
+            var dbData = {name : result[i].name, message : result[i].message, createdAt : result[i].message};
+            // console.log(dbData.name, dbData.message)
+            io.emit("receive message", { name : dbData.name, message : dbData.message, createdAt: dbData.createdAt })
+        }
+    });
     // const {user} = res.locals
     // console.log(user)
     socket.on("init", (payload) => {

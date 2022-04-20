@@ -63,10 +63,7 @@ io.on("connection", (socket)=> {
     // const chat = io.of('/chat')
     const req = socket.request;
     const { headers: { referer } } = req;
-    const roomId = referer
-        .split('/')[referer
-        .split('/').length - 1]
-        .replace(/\?.+/, '');
+    const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
     // socket.join(roomId);
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
@@ -91,7 +88,10 @@ io.on("connection", (socket)=> {
         io.to(socket.id).emit("receive message", arr.reverse())
         const req = socket.request;
         const { headers: { referer } } = req;
-        const roomId = referer
+        const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+            
+            
+            
         console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+req, referer, roomId)
         });
     })
@@ -105,7 +105,7 @@ io.on("connection", (socket)=> {
         Chat.create(item)
         const req = socket.request;
         const { headers: { referer } } = req;
-        const roomId = referer
+        const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
         console.log("#####################################################"+req, referer, roomId)
        
      });

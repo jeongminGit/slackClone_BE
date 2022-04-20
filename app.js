@@ -55,7 +55,7 @@ io.on("connection", (socket)=> {
     Chat.find(function (err, result) {
         // console.log(socket.id)
         console.log(result)
-        for(var i = result.length-1 ; i >= 0; i--) {
+        for(var i = result.length-1 ; i >= result.length-4; i--) {
             // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
             // console.log(dbData.name, dbData.message)
             io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})

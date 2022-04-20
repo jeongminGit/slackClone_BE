@@ -92,6 +92,7 @@ io.on("connection", (socket)=> {
         const req = socket.request;
         const { headers: { referer } } = req;
         const roomId = referer
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+req, referer, roomId)
         });
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
@@ -105,6 +106,7 @@ io.on("connection", (socket)=> {
         const req = socket.request;
         const { headers: { referer } } = req;
         const roomId = referer
+        console.log("#####################################################"+req, referer, roomId)
        
      });
     

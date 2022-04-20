@@ -3,7 +3,9 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const SocketIO = require('socket.io');
-
+const app = express();
+var server = require('http').createServer(app);
+const io = SocketIO(server, { path: '/socket.io' });
 const User = require('../schemas/user');
 const Room = require('../schemas/room'); 
 const Chat = require('../schemas/chat');
@@ -11,8 +13,10 @@ const authMiddleware = require("../middlewares/auth-middleware");
 
 const router = express.Router();
 
+app.set('io', io);
+
 // DirectMessage_Room: 클라이언트에 채팅방 리스트보내기
-router.get('/',authMiddleware,async (req, res, next) => { //==============> 프론트에서 확인 주소:"message/"
+router.get('/',async (req, res, next) => { //==============> 프론트에서 확인 주소:"message/"
   try {
     
     const {user} = res.locals; 

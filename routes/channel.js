@@ -126,7 +126,7 @@ router.patch('/:channelId/:contentId',authMiddleware, async (req, res) => {
 
 
 // 게시글 삭제 API
-router.delete("/:channelId/:contentId", async (req, res) => {    
+router.delete("/:channelId/:contentId", authMiddleware,async (req, res) => {    
     const { channelId, contentId } = req.params;
 
     // Channel에서 Content 삭제
@@ -184,7 +184,7 @@ router.post("/:channelId/:contentId/comment",authMiddleware, async (req, res) =>
 
 
 
-// 댓글 삭제 (문희)
+// 댓글 삭제
 router.delete("/:channelId/:contentId/:commentId",authMiddleware, async (req, res) => {
     const { contentId, commentId } = req.params;
 

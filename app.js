@@ -4,20 +4,21 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const connect = require('./schemas');
+const Chat = require('./schemas/chat')
 const indexRouter = require('./routes');
 const AWS = require('aws-sdk');
 const authmiddleware = require('./middlewares/auth')
 const port = 3000;
 const app = express();
 
-// 소켓 db schema 생성
-var userSchema = mongoose.Schema({
-    nickname: {type: String},
-    message: {type: String}
-})
+// // 소켓 db schema 생성
+// var ChatSchema = mongoose.Schema({
+//     nickname: {type: String},
+//     message: {type: String}
+// })
 
-// mongoose model compile
-var Chat = mongoose.model('Chat', ChatSchema)
+// // mongoose model compile
+// var Chat = mongoose.model('Chat', ChatSchema)
 
 //소켓
 const socketIo = require('socket.io');

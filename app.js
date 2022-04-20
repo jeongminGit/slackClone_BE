@@ -61,7 +61,7 @@ io.on("connection", (socket)=> {
                 // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
                 // console.log(dbData.name, dbData.message)
                 // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-                io.emit("receive message", {nickname : JSON.stringify(payload.name), message : result[i].message, createdAt : result[i].createdAt})
+                io.emit("receive message", {name : JSON.stringify(payload.name), message : result[i].message, createdAt : result[i].createdAt})
             }
         });
     })

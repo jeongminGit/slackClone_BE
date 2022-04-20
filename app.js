@@ -58,7 +58,7 @@ io.on("connection", (socket)=> {
         for(var i = result.length-1 ; i >= 0; i--) {
             var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].message};
             // console.log(dbData.name, dbData.message)
-            io.emit("receive message", { nickname : dbData.nickname, message : dbData.message, createdAt: dbData.createdAt })
+            io.emit("receive message", { nickname : dbData[i].nickname, message : dbData[i].message, createdAt: dbData[i].createdAt })
         }
     });
     // const {user} = res.locals

@@ -72,7 +72,7 @@ io.on("connection", (socket)=> {
                 // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
-        console.log(arr, arr.reverse())
+        // console.log(arr, arr.reverse())
         io.emit("receive message", arr)
         });
     })

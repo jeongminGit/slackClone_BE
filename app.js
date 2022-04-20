@@ -71,6 +71,7 @@ io.on("connection", (socket)=> {
         io.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt});
         var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt });
         console.log(chat)
+        console.log(item)
         chat.save(item)
        
        //클라이언트에 이벤트를 보냄

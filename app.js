@@ -54,7 +54,7 @@ io.on("connection", (socket)=> {
     Chat.find(function (err, result) {
         for(var i = result.length-1 ; i >= result.length-10 ; i--) {
             var dbData = {name : result[i].name, message : result[i].message};
-            // io.sockets.sockets[socket.id].emit('preload', dbData);
+            io.emit("last message", { name : result[i].name, message : result[i].message })
             console.log(dbData)
         }
     });

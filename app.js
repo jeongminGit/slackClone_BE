@@ -61,7 +61,15 @@ app.use('/', indexRouter);
 io.on("connection", (socket)=> {
     // const room = io.of('/room')
     // const chat = io.of('/chat')
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
+    const req = socket.request;
+    const { headers: { referer } } = req;
+    const roomId = referer
+        .split('/')[referer
+        .split('/').length - 1]
+        .replace(/\?.+/, '');
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, JSON.stringify(headers), roomId)
+    // socket.join(roomId);
+    // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
     console.log("연결이되었습니다.")
     socket.on("init", (payload) => {
         // console.log(req.locals)

@@ -64,7 +64,7 @@ io.on("connection", (socket)=> {
     // const {user} = res.locals
     // console.log(user)
     socket.on("init", (payload) => {
-        console.log("--------------"+payload+"--------------")
+        console.log("--------------"+JSON.stringify(payload)+"--------------")
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
         console.log(item.name + " : " + item.message + " : " + item.createdAt);

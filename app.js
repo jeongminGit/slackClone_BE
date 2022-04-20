@@ -9,6 +9,15 @@ const AWS = require('aws-sdk');
 const port = 3000;
 const app = express();
 
+// 소켓 db schema 생성
+var userSchema = mongoose.Schema({
+    nickname: 'string',
+    message: 'string'
+})
+
+// mongoose model compile
+var Chat = mongoose.model('Chat', userSchema)
+
 //소켓
 const socketIo = require('socket.io')
 const server = require('http').createServer(app)
@@ -42,14 +51,37 @@ app.use('/', indexRouter);
 //소켓추가
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
-    socket.on("init", (payload) => {
-        console.log(payload)
-    })
-    socket.on("send message", (item) => {//send message 이벤트 발생
-        console.log(item.name + " : " + item.message);
-       io.emit("receive message", { name: item.name, message: item.message });
-       //클라이언트에 이벤트를 보냄
-     });
+    Chat.find(function (err, result) {
+        for(var i = 0 ; i < result.length ; i++) {
+            var dbData = {name : result[i].nickname, message : result[i].message};
+            io.sockets.sockets[socket.id].emit('preload', dbData);
+        }
+    });
+ 
+    // sends message to other users + stores data(username + message) into DB
+    socket.on('message', function(data) {
+ 
+        io.sockets.emit('message', data);
+        // add chat into the model
+        var chat = new Chat({ username: data.name, message: data.message });
+ 
+        chat.save(function (err, data) {
+          if (err) {// TODO handle the error
+              console.log("error");
+          }
+          console.log('message is inserted');
+        });
+ 
+    });
+
+    // socket.on("init", (payload) => {
+    //     console.log(payload)
+    // })
+    // socket.on("send message", (item) => {//send message 이벤트 발생
+    //     console.log(item.name + " : " + item.message);
+    //    io.emit("receive message", { name: item.name, message: item.message });
+    //    //클라이언트에 이벤트를 보냄
+    //  });
 })
 
 

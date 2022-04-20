@@ -51,12 +51,13 @@ app.use('/', indexRouter);
 //소켓추가
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
-    // Chat.find(function (err, result) {
-    //     for(var i = 0 ; i < result.length ; i++) {
-    //         var dbData = {name : result[i].nickname, message : result[i].message};
-    //         io.sockets.sockets[socket.id].emit('preload', dbData);
-    //     }
-    // });
+    Chat.find(function (err, result) {
+        for(var i = 0 ; i < result.length ; i++) {
+            var dbData = {name : result[i].nickname, message : result[i].message};
+            io.sockets.sockets[socket.id].emit('preload', dbData);
+        }
+    });
+    console.log(dbData)
     socket.on("init", (payload) => {
         console.log(payload)
     })

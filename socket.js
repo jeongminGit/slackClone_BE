@@ -1,14 +1,19 @@
-const SocketIO = require('socket.io');
+const SocketIo = require('socket.io');
 const axios = require('axios');
 const authMiddleware = require("./middlewares/auth");
-
-// mongoose model compile
 const Chat = require('./schemas/chat')
 // var Chat = mongoose.model('Chat', ChatSchema)
 
 module.exports = (server, app) => {
-  console.log('hey')
-  const io = SocketIO(server, {path: '/socket.io'});
+  const server = require('http').createServer(app)
+  console.log('-----------------socketIo-----------------')
+  const io = SocketIo(server, {
+    cors : {
+        origin:"*", //여기에 명시된 서버만 호스트만 내서버로 연결을 허용할거야
+        methods: ["GET","POST"],
+    },
+  })
+  // const io = SocketIo(server, {path: '/socket.io'});
   app.set('io', io);
   const room = io.of('/room')
   const chat = io.of('/chat')

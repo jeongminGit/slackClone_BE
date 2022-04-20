@@ -11,6 +11,9 @@ const app = express();
 const webSocket = require('./socket')
 
 
+app.use(cors());
+connect();
+
 //소켓
 const socketIo = require('socket.io')
 const server = require('http').createServer(app)
@@ -21,9 +24,7 @@ const io = socketIo(server, {
       methods: ["GET","POST"],
   },
 })
-
-app.use(cors());
-connect();
+webSocket(server, app)
 
 const router = express.Router();
 app.use(bodyParser.json());
@@ -44,5 +45,5 @@ server.listen(port, () => {
     console.log( new Date().toLocaleString() , port, ': connect');
 });
 
-webSocket(server, app)
+
 module.exports = app

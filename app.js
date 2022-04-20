@@ -52,6 +52,7 @@ app.use('/', indexRouter);
 //소켓추가
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
+    console.log("-------------------------",JSON.stringify(payload), JSON.stringify(payload).name,"-------------------------")
     Chat.find(function (err, result) {
         // console.log(socket.id)
         for(var i = result.length-1 ; i >= result.length-4; i--) {

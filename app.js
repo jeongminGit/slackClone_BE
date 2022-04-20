@@ -63,13 +63,17 @@ io.on("connection", (socket)=> {
         console.log("--------------"+JSON.stringify(payload)+"--------------")
         Chat.find(function (err, result) {
             // console.log(socket.id)
+            const arr = []
             for(var i = result.length-1 ; i >= result.length-10; i--) {
                 console.log(result[i])
                 // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
                 // console.log(dbData.name, dbData.message)
                 // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-                io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
+                // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
+                arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
+            console.log(arr, arr.reverse())
+        io.emit("receive message", arr.reverse())
         });
     })
     socket.on("send message", (item) => {//send message 이벤트 발생

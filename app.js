@@ -60,9 +60,10 @@ app.use('/', indexRouter);
 io.on("connection", (socket)=> {
     console.log("연결이되었습니다.")
     socket.on("init", (payload) => {
-        console.log(req.locals)
+        // console.log(req.locals)
         // const existUser = (JSON.stringify(payload.user.email) == )
         console.log("--------------"+JSON.stringify(payload)+"--------------")
+        console.log(socket.id)
         Chat.find(function (err, result) {
             // console.log(socket.id)
             const arr = []
@@ -75,7 +76,7 @@ io.on("connection", (socket)=> {
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
         // console.log(arr, arr.reverse())
-        io.emit("receive message", arr.reverse())
+        io.to(socket.id).emit("receive message", arr.reverse())
         });
     })
     socket.on("send message", (item) => {//send message 이벤트 발생

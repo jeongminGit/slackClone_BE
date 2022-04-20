@@ -5,7 +5,7 @@ const Chat = require('./schemas/chat')
 // var Chat = mongoose.model('Chat', ChatSchema)
 
 module.exports = (server, app) => {
-  const server = require('http').createServer(app)
+  // const server = require('http').createServer(app)
   console.log('-----------------socketIo-----------------')
   const io = SocketIo(server, {
     cors : {

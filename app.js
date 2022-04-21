@@ -72,7 +72,8 @@ io.on("connection", (socket)=> {
         // console.log(req.locals)
         // const existUser = (JSON.stringify(payload.user.email) == )
         // console.log("--------------"+JSON.stringify(payload)+"--------------")
-        // console.log(socket.id)
+        console.log(socket.id)
+        console.log(payload)
         Chat.find(function (err, result) {
             // console.log(socket.id)
             const arr = []

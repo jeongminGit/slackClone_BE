@@ -63,7 +63,7 @@ app.use('/', indexRouter);
 const room = io.of('/chat')
 room.on("connetion", (socket) => {
     socket.on("join", ({nickname, room}, callback) => {
-        console.log(nickname, room)
+        console.log("+++++++++++++++++++++++++++++++++++++++++",nickname, room,"+++++++++++++++++++++++++++++++++++++++++")
         console.log(socket.id, "socketid")
         socket.join(room);
         socket.emit("receive message", {

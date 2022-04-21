@@ -63,8 +63,8 @@ io.on("connection", (socket)=> {
     // const room = io.of('/room')
     console.log("111111111111111111111111111111111111111111111111111111111111111111111111111111111111"+socket)
     // const chat = io.of('/chat')
-    const req = socket.request;
-    const { headers: { referer } } = req;
+    // const req = socket.request;
+    // const { headers: { referer } } = req;
     // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
     // socket.join(roomId);
@@ -90,8 +90,8 @@ io.on("connection", (socket)=> {
         // console.log(arr, arr.reverse())
         io.to(socket.id).emit("receive message", arr.reverse())
         console.log(arr)
-        const req = socket.request;
-        const { headers: { referer } } = req;
+        // const req = socket.request;
+        // const { headers: { referer } } = req;
         // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
             
             
@@ -105,11 +105,11 @@ io.on("connection", (socket)=> {
         // console.log(item.createdAt, item.profileImg)
         // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
         // console.log("chat입니다----------------------@@@@@@@@@@", chat)
-        // console.log("item입니다----------------------!!!!!!!!!!", item)
+        console.log("item입니다----------------------!!!!!!!!!!", item)
         Chat.create(item)
-        const req = socket.request;
-        const { headers: { referer } } = req;
-        const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+        // const req = socket.request;
+        // const { headers: { referer } } = req;
+        // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
         // console.log("#####################################################"+req, referer, roomId)
        
      });

@@ -142,10 +142,10 @@ chat.on("connection", (socket) => {
 
 
     });
-    socket.on("disconnect", () => {
-        socket.leave(room);;
-        chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
-    })
+    // socket.on("disconnect", () => {
+    //     socket.leave(room);;
+    //     chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
+    // })
 
 })
 

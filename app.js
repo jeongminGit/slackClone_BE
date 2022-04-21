@@ -79,7 +79,7 @@ chat.on("connection", (socket) => {
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)
     // console.log(socket.id)
     socket.on("join", ({ roomName: room, nickname: nickname }) => {
-        socket.leave(room);
+        socket.leave(room);;
         console.log("join 연결이되었습니다.")
         // console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
         // console.log(socket.id)
@@ -122,8 +122,8 @@ chat.on("connection", (socket) => {
 
 
         });
-        // socket.on("disconnect", () => {
-            // socket.leave(room);
+        socket.on("disconnect", () => {
+            socket.leave(room);;
             // chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
         })
     })

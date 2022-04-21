@@ -78,23 +78,25 @@ chat.on("connection", (socket) => {
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)
     // console.log(socket.id)
     socket.on("join", ({ roomName: room, nickname: nickname }) => {
-        socket.join(room, nickname)
         console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
         console.log(socket.id)
-        Chat.find(function (err, result) {
-            // console.log(socket.id)
-
-            const arr = []
-            for (var i = result.length - 1; i >= result.length - 10; i--) {
-                // console.log(result[i])
-                // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
-                // console.log(dbData.name, dbData.message)
-                // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-                // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
-                arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
-            }
-            // console.log(arr, arr.reverse())
-            chat.to(socket.id).emit("receive message", arr.reverse())
+        if (socket.id) {
+            socket.join(room, nickname)
+            Chat.find(function (err, result) {
+                // console.log(socket.id)
+                const arr = []
+                for (var i = result.length - 1; i >= result.length - 10; i--) {
+                    // console.log(result[i])
+                    // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
+                    // console.log(dbData.name, dbData.message)
+                    // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
+                    // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
+                    arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
+                }
+                // console.log(arr, arr.reverse())
+                chat.to(socket.id).emit("receive message", arr.reverse())
+            })
+        }
         chat.to(room).emit("onConnet", `${nickname} 님이 입장했습니다.`);
         // send: 클라이언트가 메시지 보내는 이벤트
         // socket.emit("여러분 만나서 반갑습니다")
@@ -110,51 +112,19 @@ chat.on("connection", (socket) => {
         console.log("연결이되었습니다.")
         socket.on("init", (payload) => {
             console.log("init 연결되었습니다~~~")
-            // console.log(req.locals)
-            // const existUser = (JSON.stringify(payload.user.email) == )
-            // console.log("--------------"+JSON.stringify(payload)+"--------------")
-            // console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + socket.id)
-            // console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + payload)
-            exixtRoom = Chat.find({roomName : room})
-            // console.log(exixtRoom)
-            // Chat.find(function (err, result) {
-            //     // console.log(socket.id)
+            exixtRoom = Chat.find({ roomName: room })
+        });
 
-            //     const arr = []
-            //     for (var i = result.length - 1; i >= result.length - 10; i--) {
-            //         // console.log(result[i])
-            //         // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
-            //         // console.log(dbData.name, dbData.message)
-            //         // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-            //         // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
-            //         arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
-            //     }
-            //     // console.log(arr, arr.reverse())
-            //     chat.to(socket.id).emit("receive message", arr.reverse())
-                // console.log(arr)
-                // const req = socket.request;
-                // const { headers: { referer } } = req;
-                // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
-
-
-
-                // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+req, referer, roomId)
-            });
-        })
         socket.on("send message", (item) => {//send message 이벤트 발생
             // item: {nickname: String, msg: String, createdAt: String, profileImg: String}
-            // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
             console.log("+++++++++++++++++++++++++++++++++", room, "+++++++++++++++++++++++++++++++++")
             chat.to(room).emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
-            // console.log(item.createdAt, item.profileImg)
-            // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
-            // console.log("chat입니다----------------------@@@@@@@@@@", chat)
             console.log("item입니다----------------------!!!!!!!!!!", item, room)
             const saveChat = new Chat({
                 nickname: item.nickname,
-                message: item.message, 
-                createdAt: item.createdAt, 
-                profileImg: item.profileImg, 
+                message: item.message,
+                createdAt: item.createdAt,
+                profileImg: item.profileImg,
                 roomName: room
             })
             saveChat.save()
@@ -165,7 +135,7 @@ chat.on("connection", (socket) => {
 
 
         });
-        // socket.on("disconnect", () => {
+        // socket.on("disconnect", (room) => {
         //     socket.leave(room);;
         //     chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
         // })

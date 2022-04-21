@@ -114,8 +114,8 @@ chat.on("connection", (socket) => {
                 roomName: room
             })
             saveChat.save()
-            socket.leave(room);;
-            console.log("사용자 추방!!!!!!!!!!!!!")
+            // socket.leave(room);;
+            // console.log("사용자 추방!!!!!!!!!!!!!")
             // const req = socket.request;
             // const { headers: { referer } } = req;
             // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');

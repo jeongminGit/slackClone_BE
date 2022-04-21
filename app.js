@@ -127,6 +127,7 @@ chat.on("connection", (socket) => {
         });
         socket.on("disconnect", () => {
             socket.leave(room);
+            console.log("++++++++++++++++++++++++++++++++++++++++++++방을 나간거야!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             // chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
         })
     })

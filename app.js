@@ -82,7 +82,7 @@ chat.on("connection", (socket)=> {
         console.log(socket.rooms)
         // socket.emit("여러분 만나서 반갑습니다")
         // socket.send("여러분 만나서 반갑습니다")
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + socket)
+        // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + socket)
         // console.log(chat)
         // const req = socket.request;
         // const { headers: { referer } } = req;
@@ -96,8 +96,8 @@ chat.on("connection", (socket)=> {
             // console.log(req.locals)
             // const existUser = (JSON.stringify(payload.user.email) == )
             // console.log("--------------"+JSON.stringify(payload)+"--------------")
-            console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + socket.id)
-            console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + payload)
+            // console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + socket.id)
+            // console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + payload)
             Chat.find(function (err, result) {
                 // console.log(socket.id)
                 const arr = []
@@ -110,7 +110,7 @@ chat.on("connection", (socket)=> {
                     arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
                 }
                 // console.log(arr, arr.reverse())
-                socket.emit("receive message", arr.reverse())
+                chat.to(socket.id).emit("receive message", arr.reverse())
                 console.log(arr)
                 // const req = socket.request;
                 // const { headers: { referer } } = req;

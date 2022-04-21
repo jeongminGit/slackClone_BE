@@ -82,8 +82,9 @@ chat.on("connection", (socket) => {
         console.log("join 연결이되었습니다.")
         console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
         console.log(socket.id)
-        // console.log(chat.emit("receive message"))
-        if (chat.emit("receive message")) {
+        const existMessage = chat.emit("receive message")
+        console.log(existMessage)
+        if (true) {
             socket.join(room, nickname)
             Chat.find(function (err, result) {
                 const arr = []
@@ -93,7 +94,7 @@ chat.on("connection", (socket) => {
                 chat.to(socket.id).emit("receive message", arr.reverse())
             })
         }
-        socket.emit("join", nickname, "님이 입장했습니다.");
+        // socket.emit("join", nickname, "님이 입장했습니다.");
         // const { headers: { referer } } = req;
         // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
@@ -101,7 +102,7 @@ chat.on("connection", (socket) => {
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
         socket.on("init", (payload) => {
             console.log("init 연결되었습니다~~~")
-            exixtRoom = Chat.find({ roomName: room })
+            // exixtRoom = Chat.find({ roomName: room })
         });
         socket.on("send message", (item) => {//send message 이벤트 발생
             // item: {nickname: String, msg: String, createdAt: String, profileImg: String}

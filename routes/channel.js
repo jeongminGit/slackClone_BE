@@ -22,7 +22,7 @@ router.get("/channel/:userId",authMiddleware, async (req, res) => {
     const contents = await ChannelContent.find({});
     const comments = await ChannelComment.find({});
 
-    console.log(channels)
+    // console.log(channels)
 
     let newDic = {
         channel : channels,
@@ -59,7 +59,7 @@ router.post("/channel/channel",authMiddleware, async (req, res) => {
 router.patch("/channel/:channelId",authMiddleware, async(req, res) => {
     const { channelId } = req.params;
     const {channelName} = req.body;
-    console.log(channelId, channelName)
+    // console.log(channelId, channelName)
 
     const channel = await Channel.updateOne({_id:channelId},
         {$set:{channelName: channelName}}
@@ -161,7 +161,7 @@ router.post("/:channelId/:contentId/comment",authMiddleware, async (req, res) =>
    
     // ProfileImg  //로그인 통합후 authmiddleware와 함께 오픈!
     const userinfo = await User.findOne({user})  
-    console.log(userinfo)
+    // console.log(userinfo)
 
     // Content에 Comment 추가
     const content = await ChannelContent.findOne({contentId})

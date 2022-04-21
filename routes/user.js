@@ -63,7 +63,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
         }  
         // console.log("비밀번호 일치 통과")
         const existId = await User.findOne({ email })
-        console.log(existId)
+        // console.log(existId)
         if (existId) {
             return returnError("이미 사용 중인 이메일입니다.");
         }         
@@ -116,7 +116,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
             return
         } else {
             const correctPassword = await bcrypt.compareSync(password, user.password)//hash 값과 req값을 비교해서 일치하면 true 출력
-            console.log(correctPassword)
+            // console.log(correctPassword)
             if (correctPassword) {
                 const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);
                 const nickname = user.nickname;

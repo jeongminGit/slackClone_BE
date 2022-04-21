@@ -29,9 +29,9 @@ const server = require('http').createServer(app)
 // // 모든 도메인 허용 
 
 const io = socketIo(server, {
-    cors : {
-        origin:"*", //여기에 명시된 서버만 호스트만 내서버로 연결을 허용할거야
-        methods: ["GET","POST"],
+    cors: {
+        origin: "*", //여기에 명시된 서버만 호스트만 내서버로 연결을 허용할거야
+        methods: ["GET", "POST"],
     },
 })
 
@@ -42,7 +42,7 @@ connect();
 const router = express.Router();
 app.use(bodyParser.json());
 app.use(express.json());
-app.use('/', express.urlencoded({extended: false}), router); // API 요청에서 받은 body 값을 파싱(해석)하는 역할을 수행하는 것이 bodyParser
+app.use('/', express.urlencoded({ extended: false }), router); // API 요청에서 받은 body 값을 파싱(해석)하는 역할을 수행하는 것이 bodyParser
 
 // post middleware
 const requestMiddleware = (req, res, next) => {
@@ -74,10 +74,12 @@ app.use('/', indexRouter);
 //     })
 // })
 const chat = io.of('/chat')
-chat.on("connection", (socket)=> {
+chat.on("connection", (socket) => {
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",room)
     socket.on("join", ({ roomName: room, nickname: nickname }) => {
         socket.join(room)
-        console.log("+++++++++++++++++++++++++++++++++",socket.rooms,"+++++++++++++++++++++++++++++++++")
+        console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
         chat.to(room).emit("onConnet", `${nickname} 님이 입장했습니다.`);
         // send: 클라이언트가 메시지 보내는 이벤트
         // socket.emit("여러분 만나서 반갑습니다")
@@ -124,7 +126,7 @@ chat.on("connection", (socket)=> {
         socket.on("send message", (item) => {//send message 이벤트 발생
             // item: {nickname: String, msg: String, createdAt: String, profileImg: String}
             // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
-            console.log("+++++++++++++++++++++++++++++++++",room,"+++++++++++++++++++++++++++++++++")
+            console.log("+++++++++++++++++++++++++++++++++", room, "+++++++++++++++++++++++++++++++++")
             chat.to(room).emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
             // console.log(item.createdAt, item.profileImg)
             // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
@@ -147,7 +149,7 @@ chat.on("connection", (socket)=> {
 
 
 server.listen(port, () => {
-    console.log( new Date().toLocaleString() , port, ': connect');
+    console.log(new Date().toLocaleString(), port, ': connect');
 });
 
 module.exports = app

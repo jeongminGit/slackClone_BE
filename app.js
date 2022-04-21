@@ -106,7 +106,7 @@ chat.on("connection", (socket)=> {
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
         // console.log(arr, arr.reverse())
-        socket.emit("receive message", arr.reverse())
+        socket.of("/").emit("receive message", arr.reverse())
         console.log(arr)
         // const req = socket.request;
         // const { headers: { referer } } = req;

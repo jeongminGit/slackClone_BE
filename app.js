@@ -133,11 +133,11 @@ chat.on("connection", (socket) => {
         // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
         // console.log("#####################################################"+req, referer, roomId)
     });
-    // socket.on("disconnect", () => {
-    //     socket.leave(room);
-    //     console.log("++++++++++++++++++++++++++++++++++++++++++++방을 나간거야!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    //     // chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
-    // });
+    socket.on("disconnect", () => {
+        socket.leave();
+        console.log("++++++++++++++++++++++++++++++++++++++++++++방을 나간거야!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        // chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
+    });
 });
 
 

@@ -61,7 +61,6 @@ app.use('/', indexRouter);
 //소켓추가
 io.on("connection", (socket)=> {
     // const room = io.of('/room')
-    console.log("111111111111111111111111111111111111111111111111111111111111111111111111111111111111"+socket)
     // const chat = io.of('/chat')
     // const req = socket.request;
     // const { headers: { referer } } = req;

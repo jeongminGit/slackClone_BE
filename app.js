@@ -23,6 +23,7 @@ const app = express();
 //소켓
 const socketIo = require('socket.io');
 const { create } = require('./schemas/user');
+const { Iot } = require('aws-sdk');
 const server = require('http').createServer(app)
 // // 모든 도메인 허용 
 
@@ -61,15 +62,15 @@ app.use('/', indexRouter);
 io.on("connection", (socket)=> {
     // const room = io.of('/room')
     console.log("111111111111111111111111111111111111111111111111111111111111111111111111111111111111"+socket)
-    const chat = io.of('/chat')
+    // const chat = io.of('/chat')
     const req = socket.request;
     const { headers: { referer } } = req;
-    const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
+    // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+    // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
     // socket.join(roomId);
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
     console.log("연결이되었습니다.")
-    chat.on("init", (payload) => {
+    io.on("init", (payload) => {
         // console.log(req.locals)
         // const existUser = (JSON.stringify(payload.user.email) == )
         // console.log("--------------"+JSON.stringify(payload)+"--------------")
@@ -87,19 +88,19 @@ io.on("connection", (socket)=> {
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
         // console.log(arr, arr.reverse())
-        chat.to(socket.id).emit("receive message", arr.reverse())
+        io.to(socket.id).emit("receive message", arr.reverse())
         const req = socket.request;
         const { headers: { referer } } = req;
-        const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+        // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
             
             
             
         // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+req, referer, roomId)
         });
     })
-    chat.on("send message", (item) => {//send message 이벤트 발생
+    io.on("send message", (item) => {//send message 이벤트 발생
         // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
-        chat.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
+        io.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
         // console.log(item.createdAt, item.profileImg)
         // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
         // console.log("chat입니다----------------------@@@@@@@@@@", chat)

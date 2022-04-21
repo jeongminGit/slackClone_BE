@@ -156,7 +156,7 @@ router.post("/signup", upload.single('image'), async (req, res) => {
     router.get("/getuser", authMiddleware, async (req, res) => {
         const { user } = res.locals;
         // const token = jwt.sign({ email: user.email }, `${process.env.KEY}`);
-        console.log(user[0])
+        // console.log(user[0])
         res.send({
             email: user[0].email,
             nickname: user[0].nickname,

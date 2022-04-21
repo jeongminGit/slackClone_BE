@@ -90,7 +90,7 @@ chat.on("connection", (socket)=> {
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
         // console.log(arr, arr.reverse())
-        socket.emit("receive message", arr.reverse())
+        io.to(socket.id).emit("receive message", arr.reverse())
         console.log(arr)
         // const req = socket.request;
         // const { headers: { referer } } = req;
@@ -103,7 +103,7 @@ chat.on("connection", (socket)=> {
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
         // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
-        socket.broadcast.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
+        socket.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
         // console.log(item.createdAt, item.profileImg)
         // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
         // console.log("chat입니다----------------------@@@@@@@@@@", chat)

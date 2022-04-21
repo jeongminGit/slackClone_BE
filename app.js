@@ -80,11 +80,11 @@ chat.on("connection", (socket) => {
     // console.log(socket.id)
     socket.on("join", ({ roomName: room, nickname: nickname }) => {
         console.log("join 연결이되었습니다.")
-        console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
-        console.log(socket.id)
-        const existMessage = chat.emit("receive message")
+        // console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
+        // console.log(socket.id)
+        existMessage = (result !== undefined)
         console.log(existMessage)
-        if (true) {
+        if (existMessage) {
             socket.join(room, nickname)
             Chat.find(function (err, result) {
                 const arr = []

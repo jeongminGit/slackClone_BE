@@ -61,7 +61,9 @@ app.use('/', indexRouter);
 //소켓추가
 io.on("connection", (socket)=> {
     // const room = io.of('/room')
-    // const chat = io.of('/chat')
+    const chat = io.of('/chat')
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+socket)
+    console.log(chat)
     // const req = socket.request;
     // const { headers: { referer } } = req;
     // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
@@ -69,7 +71,7 @@ io.on("connection", (socket)=> {
     // socket.join(roomId);
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
     console.log("연결이되었습니다.")
-    socket.on("init", (payload) => {
+    chat.on("init", (payload) => {
         console.log("init 연결되었습니다~~~")
         // console.log(req.locals)
         // const existUser = (JSON.stringify(payload.user.email) == )
@@ -99,7 +101,7 @@ io.on("connection", (socket)=> {
         // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+req, referer, roomId)
         });
     })
-    socket.on("send message", (item) => {//send message 이벤트 발생
+    chat.on("send message", (item) => {//send message 이벤트 발생
         // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
         io.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
         // console.log(item.createdAt, item.profileImg)

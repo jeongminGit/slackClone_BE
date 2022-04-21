@@ -70,7 +70,7 @@ io.on("connection", (socket)=> {
     // socket.join(roomId);
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
     console.log("연결이되었습니다.")
-    io.on("init", (payload) => {
+    socket.on("init", (payload) => {
         // console.log(req.locals)
         // const existUser = (JSON.stringify(payload.user.email) == )
         // console.log("--------------"+JSON.stringify(payload)+"--------------")

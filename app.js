@@ -74,7 +74,8 @@ app.use('/', indexRouter);
 //         })
 //     })
 // })
-const chat = io.of('/chat', { reconnection: true })
+// , { reconnection: true }
+const chat = io.of('/chat')
 chat.on("connection", (socket) => {
     console.log("connection 연결이되었습니다.")
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)

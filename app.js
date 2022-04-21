@@ -23,7 +23,7 @@ const app = express();
 //소켓
 const socketIo = require('socket.io');
 const { create } = require('./schemas/user');
-const { Iot } = require('aws-sdk');
+const { Iot, Route53Domains } = require('aws-sdk');
 const { SocketAddress } = require('net');
 const server = require('http').createServer(app)
 // // 모든 도메인 허용 
@@ -65,6 +65,7 @@ room.on("connetion", (socket) => {
     socket.on("join", ({nickname, room}, callback) => {
         console.log("+++++++++++++++++++++++++++++++++++++++++",nickname, room,"+++++++++++++++++++++++++++++++++++++++++")
         console.log(socket.id, "socketid")
+        console.log(socket.rooms)
         socket.join(room);
         socket.emit("receive message", {
             user: nickname,
@@ -74,6 +75,7 @@ room.on("connetion", (socket) => {
 })
 const chat = io.of('/chat')
 chat.on("connection", (socket)=> {
+    console.log(socket.rooms)
     socket.emit("여러분 만나서 반갑습니다")
     socket.send("여러분 만나서 반갑습니다")
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+socket)
@@ -104,7 +106,7 @@ chat.on("connection", (socket)=> {
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
         // console.log(arr, arr.reverse())
-        socket.rooms.emit("receive message", arr.reverse())
+        socket.emit("receive message", arr.reverse())
         console.log(arr)
         // const req = socket.request;
         // const { headers: { referer } } = req;

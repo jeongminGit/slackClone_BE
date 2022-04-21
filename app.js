@@ -24,6 +24,7 @@ const app = express();
 const socketIo = require('socket.io');
 const { create } = require('./schemas/user');
 const { Iot } = require('aws-sdk');
+const { SocketAddress } = require('net');
 const server = require('http').createServer(app)
 // // 모든 도메인 허용 
 
@@ -59,7 +60,18 @@ app.use('/', indexRouter);
 
 
 //소켓추가
-// const room = io.of('/room')
+const room = io.of('/chat')
+room.on("connetion", (socket) => {
+    socket.on("join", ({nickname, room}, callback) => {
+        // console.log(nickname, room)
+        // console.log(socket.id, "socketid")
+        socket.join(room);
+        socket.emit("receive message", {
+            user: "admin",
+            test: nickname + "welcome to the room" + room
+        })
+    })
+})
 const chat = io.of('/chat')
 chat.on("connection", (socket)=> {
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+socket)
@@ -103,7 +115,7 @@ chat.on("connection", (socket)=> {
     })
     // socket.on("send message", (item) => {//send message 이벤트 발생
     //     // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
-    //     socket.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
+    //     socket.to(roomId).emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
     //     // console.log(item.createdAt, item.profileImg)
     //     // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
     //     // console.log("chat입니다----------------------@@@@@@@@@@", chat)

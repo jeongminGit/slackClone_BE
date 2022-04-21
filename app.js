@@ -67,13 +67,15 @@ room.on("connetion", (socket) => {
         console.log(socket.id, "socketid")
         socket.join(room);
         socket.emit("receive message", {
-            user: "admin",
+            user: nickname,
             test: nickname + "welcome to the room" + room
         })
     })
 })
 const chat = io.of('/chat')
 chat.on("connection", (socket)=> {
+    socket.emit("여러분 만나서 반갑습니다")
+    socket.send("여러분 만나서 반갑습니다")
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+socket)
     // console.log(chat)
     // const req = socket.request;
@@ -102,7 +104,7 @@ chat.on("connection", (socket)=> {
                 arr.push({nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
             }
         // console.log(arr, arr.reverse())
-        socket.emit("receive message", arr.reverse())
+        socket.rooms.emit("receive message", arr.reverse())
         console.log(arr)
         // const req = socket.request;
         // const { headers: { referer } } = req;
@@ -115,8 +117,7 @@ chat.on("connection", (socket)=> {
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
         // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
-        socket.id = klVIHHgMMMpSVjKPAAAV
-        socket.to(socket.id).emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
+        socket.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
         // console.log(item.createdAt, item.profileImg)
         // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
         // console.log("chat입니다----------------------@@@@@@@@@@", chat)

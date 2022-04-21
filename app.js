@@ -76,7 +76,6 @@ app.use('/', indexRouter);
 const chat = io.of('/chat')
 chat.on("connection", (socket) => {
     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",room)
     socket.on("join", ({ roomName: room, nickname: nickname }) => {
         socket.join(room)
         console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")

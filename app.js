@@ -78,7 +78,7 @@ chat.on("connection", (socket) => {
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)
     // console.log(socket.id)
     socket.on("join", ({ roomName: room, nickname: nickname }) => {
-        socket.join(room)
+        socket.join(room, nickname)
         console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
         console.log(socket.id)
         chat.to(room).emit("onConnet", `${nickname} 님이 입장했습니다.`);

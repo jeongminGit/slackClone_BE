@@ -60,7 +60,7 @@ app.use('/', indexRouter);
 
 //소켓추가
 // const room = io.of('/room')
-const chat = io.of('/')
+const chat = io.of('/chat')
 chat.on("connection", (socket)=> {
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+socket)
     // console.log(chat)

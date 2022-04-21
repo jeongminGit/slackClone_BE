@@ -89,6 +89,7 @@ io.on("connection", (socket)=> {
             }
         // console.log(arr, arr.reverse())
         io.to(socket.id).emit("receive message", arr.reverse())
+        console.log(arr)
         const req = socket.request;
         const { headers: { referer } } = req;
         // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');

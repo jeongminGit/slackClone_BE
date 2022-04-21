@@ -115,7 +115,8 @@ chat.on("connection", (socket)=> {
     })
     socket.on("send message", (item) => {//send message 이벤트 발생
         // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
-        socket.to(klVIHHgMMMpSVjKPAAAV).emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
+        socket.id = klVIHHgMMMpSVjKPAAAV
+        socket.to(socket.id).emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg});
         // console.log(item.createdAt, item.profileImg)
         // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
         // console.log("chat입니다----------------------@@@@@@@@@@", chat)

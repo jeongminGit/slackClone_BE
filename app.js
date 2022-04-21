@@ -76,7 +76,7 @@ app.use('/', indexRouter);
 const chat = io.of('/chat')
 chat.on("connection", (socket)=> {
     socket.on("join", ({ roomName: room, nickname: nickname }) => {
-        socket.join("+++++++++++++++++++++++++++++++++",room,"+++++++++++++++++++++++++++++++++")
+        socket.join(room)
         console.log("+++++++++++++++++++++++++++++++++",socket.rooms,"+++++++++++++++++++++++++++++++++")
         chat.to(room).emit("onConnet", `${nickname} 님이 입장했습니다.`);
         // send: 클라이언트가 메시지 보내는 이벤트

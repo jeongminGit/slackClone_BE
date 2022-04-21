@@ -78,6 +78,11 @@ chat.on("connection", (socket) => {
     console.log("connection 연결이되었습니다.")
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)
     // console.log(socket.id)
+    socket.on("disconnect", () => {
+        socket.leave(room);
+        console.log("++++++++++++++++++++++++++++++++++++++++++++방을 나간거야!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        // chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
+    });
     socket.on("init", (payload) => {
         console.log("init 연결되었습니다~~~")
         // exixtRoom = Chat.find({ roomName: room })
@@ -96,7 +101,6 @@ chat.on("connection", (socket) => {
                 chat.to(socket.id).emit("receive message", arr.reverse())
             }
         })
-
         // socket.emit("join", nickname, "님이 입장했습니다.");
         // const { headers: { referer } } = req;
         // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
@@ -108,7 +112,7 @@ chat.on("connection", (socket) => {
         // item: {nickname: String, msg: String, createdAt: String, profileImg: String}
         // console.log("+++++++++++++++++++++++++++++++++", room, "+++++++++++++++++++++++++++++++++")
         chat.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
-        console.log("item입니다----------------------!!!!!!!!!!", item, room)
+        console.log("item입니다----------------------!!!!!!!!!!", item)
         const saveChat = new Chat({
             nickname: item.nickname,
             message: item.message,
@@ -124,13 +128,7 @@ chat.on("connection", (socket) => {
         // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
         // console.log("#####################################################"+req, referer, roomId)
     });
-    socket.on("disconnect", () => {
-        socket.leave(room);
-        console.log("++++++++++++++++++++++++++++++++++++++++++++방을 나간거야!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        // chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
-    })
-
-})
+});
 
 
 server.listen(port, () => {

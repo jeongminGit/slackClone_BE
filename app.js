@@ -81,17 +81,20 @@ chat.on("connection", (socket) => {
         socket.join(room, nickname)
         console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
         console.log(socket.id)
-        const arr = []
-        for (var i = result.length - 1; i >= result.length - 10; i--) {
-            // console.log(result[i])
-            // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
-            // console.log(dbData.name, dbData.message)
-            // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-            // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
-            arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
-        }
-        // console.log(arr, arr.reverse())
-        chat.to(socket.id).emit("receive message", arr.reverse())
+        Chat.find(function (err, result) {
+            // console.log(socket.id)
+
+            const arr = []
+            for (var i = result.length - 1; i >= result.length - 10; i--) {
+                // console.log(result[i])
+                // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
+                // console.log(dbData.name, dbData.message)
+                // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
+                // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
+                arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
+            }
+            // console.log(arr, arr.reverse())
+            chat.to(socket.id).emit("receive message", arr.reverse())
         chat.to(room).emit("onConnet", `${nickname} 님이 입장했습니다.`);
         // send: 클라이언트가 메시지 보내는 이벤트
         // socket.emit("여러분 만나서 반갑습니다")
@@ -112,22 +115,22 @@ chat.on("connection", (socket) => {
             // console.log("--------------"+JSON.stringify(payload)+"--------------")
             // console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + socket.id)
             // console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + payload)
-            exixtRoom = Chat.find({ roomName: room })
+            exixtRoom = Chat.find({roomName : room})
             // console.log(exixtRoom)
-            Chat.find(function (err, result) {
-                // console.log(socket.id)
+            // Chat.find(function (err, result) {
+            //     // console.log(socket.id)
 
-                // const arr = []
-                // for (var i = result.length - 1; i >= result.length - 10; i--) {
-                //     // console.log(result[i])
-                //     // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
-                //     // console.log(dbData.name, dbData.message)
-                //     // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
-                //     // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
-                //     arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
-                // }
-                // // console.log(arr, arr.reverse())
-                // chat.to(socket.id).emit("receive message", arr.reverse())
+            //     const arr = []
+            //     for (var i = result.length - 1; i >= result.length - 10; i--) {
+            //         // console.log(result[i])
+            //         // var dbData = {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt};
+            //         // console.log(dbData.name, dbData.message)
+            //         // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt})
+            //         // io.emit("receive message", {nickname : result[i].nickname, message : result[i].message, createdAt : result[i].createdAt, profileImg: result[i].profileImg})
+            //         arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
+            //     }
+            //     // console.log(arr, arr.reverse())
+            //     chat.to(socket.id).emit("receive message", arr.reverse())
                 // console.log(arr)
                 // const req = socket.request;
                 // const { headers: { referer } } = req;
@@ -149,9 +152,9 @@ chat.on("connection", (socket) => {
             console.log("item입니다----------------------!!!!!!!!!!", item, room)
             const saveChat = new Chat({
                 nickname: item.nickname,
-                message: item.message,
-                createdAt: item.createdAt,
-                profileImg: item.profileImg,
+                message: item.message, 
+                createdAt: item.createdAt, 
+                profileImg: item.profileImg, 
                 roomName: room
             })
             saveChat.save()

@@ -86,7 +86,7 @@ chat.on("connection", (socket) => {
         Chat.find(function (err, result) {
             const arr = []
             if (result.length !== 0) {
-                for (var i = result.length - 1; i >= result.length - 10; i--) {
+                for (var i = result.length - 1; i >= 0; i--) {
                     arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
                 }
                 chat.to(socket.id).emit("receive message", arr.reverse())

@@ -101,8 +101,11 @@ chat.on("connection", (socket) => {
             // console.log("--------------"+JSON.stringify(payload)+"--------------")
             // console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + socket.id)
             // console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + payload)
+            exixtRoom = Chat.find(roomName)
+            console.log(exixtRoom)
             Chat.find(function (err, result) {
                 // console.log(socket.id)
+
                 const arr = []
                 for (var i = result.length - 1; i >= result.length - 10; i--) {
                     // console.log(result[i])
@@ -128,12 +131,12 @@ chat.on("connection", (socket) => {
             // item: {nickname: String, msg: String, createdAt: String, profileImg: String}
             // console.log(item.nickname + " : " + item.message + " : " + item.createdAt);
             console.log("+++++++++++++++++++++++++++++++++", room, "+++++++++++++++++++++++++++++++++")
-            socket.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
+            chat.to(room).emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
             // console.log(item.createdAt, item.profileImg)
             // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
             // console.log("chat입니다----------------------@@@@@@@@@@", chat)
             console.log("item입니다----------------------!!!!!!!!!!", item)
-            Chat.create(item)
+            Chat.create(item, {roomName: room} )
             // const req = socket.request;
             // const { headers: { referer } } = req;
             // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');

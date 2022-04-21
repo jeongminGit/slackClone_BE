@@ -15,6 +15,9 @@ const ChatSchema = new mongoose.Schema({
   profileImg: {
     type: String
   },
+  roomName: {
+    type: String
+  }
   
 });
 

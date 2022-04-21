@@ -101,7 +101,7 @@ chat.on("connection", (socket) => {
             // console.log("--------------"+JSON.stringify(payload)+"--------------")
             // console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + socket.id)
             // console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + payload)
-            exixtRoom = Chat.find(roomName)
+            exixtRoom = Chat.find({roomName : room})
             console.log(exixtRoom)
             Chat.find(function (err, result) {
                 // console.log(socket.id)

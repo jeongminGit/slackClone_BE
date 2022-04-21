@@ -93,7 +93,7 @@ chat.on("connection", (socket) => {
                 chat.to(socket.id).emit("receive message", arr.reverse())
             })
         }
-        chat.broadcast().emit("onConnet", `${nickname} 님이 입장했습니다.`);
+        chat.broadcast.emit("onConnet", `${nickname} 님이 입장했습니다.`);
         // const { headers: { referer } } = req;
         // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)

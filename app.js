@@ -63,8 +63,8 @@ io.on("connection", (socket)=> {
     // const chat = io.of('/chat')
     const req = socket.request;
     const { headers: { referer } } = req;
-    const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
+    // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+    // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
     // socket.join(roomId);
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
     console.log("연결이되었습니다.")

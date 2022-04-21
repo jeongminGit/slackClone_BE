@@ -135,8 +135,8 @@ chat.on("connection", (socket) => {
             // console.log(item.createdAt, item.profileImg)
             // var chat = new Chat({ nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
             // console.log("chat입니다----------------------@@@@@@@@@@", chat)
-            console.log("item입니다----------------------!!!!!!!!!!", item)
-            Chat.create(item, {roomName: room} )
+            console.log("item입니다----------------------!!!!!!!!!!", item, room)
+            Chat.create({item, roomName: room} )
             // const req = socket.request;
             // const { headers: { referer } } = req;
             // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');

@@ -78,6 +78,10 @@ chat.on("connection", (socket) => {
     console.log("connection 연결이되었습니다.")
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)
     // console.log(socket.id)
+    socket.on("init", (payload) => {
+        console.log("init 연결되었습니다~~~")
+        // exixtRoom = Chat.find({ roomName: room })
+    });
     socket.on("join", ({ roomName: room, nickname: nickname }) => {
         console.log("join 연결이되었습니다.")
         // console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
@@ -99,37 +103,31 @@ chat.on("connection", (socket) => {
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
         // socket.join(roomId);
         // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
-        socket.on("init", (payload) => {
-            console.log("init 연결되었습니다~~~")
-            // exixtRoom = Chat.find({ roomName: room })
-        });
-        socket.on("send message", (item) => {//send message 이벤트 발생
-            // item: {nickname: String, msg: String, createdAt: String, profileImg: String}
-            console.log("+++++++++++++++++++++++++++++++++", room, "+++++++++++++++++++++++++++++++++")
-            chat.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
-            console.log("item입니다----------------------!!!!!!!!!!", item, room)
-            const saveChat = new Chat({
-                nickname: item.nickname,
-                message: item.message,
-                createdAt: item.createdAt,
-                profileImg: item.profileImg,
-                roomName: room
-            })
-            saveChat.save()
-            // socket.leave(room);;
-            // console.log("사용자 추방!!!!!!!!!!!!!")
-            // const req = socket.request;
-            // const { headers: { referer } } = req;
-            // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
-            // console.log("#####################################################"+req, referer, roomId)
-
-
-        });
-        socket.on("disconnect", () => {
-            socket.leave(room);
-            console.log("++++++++++++++++++++++++++++++++++++++++++++방을 나간거야!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            // chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
+    })
+    socket.on("send message", (item) => {//send message 이벤트 발생
+        // item: {nickname: String, msg: String, createdAt: String, profileImg: String}
+        // console.log("+++++++++++++++++++++++++++++++++", room, "+++++++++++++++++++++++++++++++++")
+        chat.emit("receive message", { nickname: item.nickname, message: item.message, createdAt: item.createdAt, profileImg: item.profileImg });
+        console.log("item입니다----------------------!!!!!!!!!!", item, room)
+        const saveChat = new Chat({
+            nickname: item.nickname,
+            message: item.message,
+            createdAt: item.createdAt,
+            profileImg: item.profileImg,
+            roomName: room
         })
+        saveChat.save()
+        // socket.leave(room);;
+        // console.log("사용자 추방!!!!!!!!!!!!!")
+        // const req = socket.request;
+        // const { headers: { referer } } = req;
+        // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+        // console.log("#####################################################"+req, referer, roomId)
+    });
+    socket.on("disconnect", () => {
+        socket.leave(room);
+        console.log("++++++++++++++++++++++++++++++++++++++++++++방을 나간거야!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        // chat.to(room).emit("onDisconnect", `${nickname} 님이 퇴장하셨습니다.`)
     })
 
 })

@@ -60,12 +60,12 @@ app.use('/', indexRouter);
 //소켓추가
 io.on("connection", (socket)=> {
     // const room = io.of('/room')
-    console.log(socket)
+    console.log("111111111111111111111111111111111111111111111111111111111111111111111111111111111111"+socket)
     const chat = io.of('/chat')
     const req = socket.request;
     const { headers: { referer } } = req;
-    // const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
-    // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
+    const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+req, referer, roomId)
     // socket.join(roomId);
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+socket.request)
     console.log("연결이되었습니다.")
@@ -73,8 +73,8 @@ io.on("connection", (socket)=> {
         // console.log(req.locals)
         // const existUser = (JSON.stringify(payload.user.email) == )
         // console.log("--------------"+JSON.stringify(payload)+"--------------")
-        console.log(socket.id)
-        console.log(payload)
+        console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"+socket.id)
+        console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"+payload)
         Chat.find(function (err, result) {
             // console.log(socket.id)
             const arr = []
@@ -94,7 +94,7 @@ io.on("connection", (socket)=> {
             
             
             
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+req, referer, roomId)
+        // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+req, referer, roomId)
         });
     })
     chat.on("send message", (item) => {//send message 이벤트 발생
@@ -108,7 +108,7 @@ io.on("connection", (socket)=> {
         const req = socket.request;
         const { headers: { referer } } = req;
         const roomId = referer.split('/')[referer.split('/').length - 1].replace(/\?.+/, '');
-        console.log("#####################################################"+req, referer, roomId)
+        // console.log("#####################################################"+req, referer, roomId)
        
      });
     

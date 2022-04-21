@@ -83,13 +83,16 @@ chat.on("connection", (socket) => {
         // console.log("+++++++++++++++++++++++++++++++++", socket.rooms, "+++++++++++++++++++++++++++++++++")
         // console.log(socket.id)
         socket.join(room, nickname)
-        // Chat.find(function (err, result) {
-        //     const arr = []
-        //     for (var i = result.length - 1; i >= result.length - 10; i--) {
-        //         arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
-        //     }
-        //     chat.to(socket.id).emit("receive message", arr.reverse())
-        // })
+        Chat.find(function (err, result) {
+            console.log(result)
+            const arr = []
+            if (result) {
+                for (var i = result.length - 1; i >= result.length - 10; i--) {
+                    arr.push({ nickname: result[i].nickname, message: result[i].message, createdAt: result[i].createdAt, profileImg: result[i].profileImg })
+                }
+                chat.to(socket.id).emit("receive message", arr.reverse())
+            }
+        })
 
         // socket.emit("join", nickname, "님이 입장했습니다.");
         // const { headers: { referer } } = req;

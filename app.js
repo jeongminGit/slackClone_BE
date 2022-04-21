@@ -35,6 +35,7 @@ const io = socketIo(server, {
     },
 })
 
+// var socket = io.connect('http://server.com', { reconnection: true });
 
 app.use(cors());
 connect();
@@ -73,7 +74,7 @@ app.use('/', indexRouter);
 //         })
 //     })
 // })
-const chat = io.of('/chat')
+const chat = io.of('/chat', { reconnection: true })
 chat.on("connection", (socket) => {
     console.log("connection 연결이되었습니다.")
     // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",socket.rooms)
